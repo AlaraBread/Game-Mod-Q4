@@ -1107,6 +1107,9 @@ private:
 	bool					banListLoaded;
 	bool					banListChanged;
 // RAVEN END
+
+public:
+	idVec3					hitscanEndPos;
 };
 
 //============================================================================

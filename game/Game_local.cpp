@@ -7655,6 +7655,8 @@ idEntity* idGameLocal::HitScan(
 			actualHitEnt   = NULL;
 			start		   = collisionPoint;
 
+			hitscanEndPos = collisionPoint;
+
 			// Keep tracing if we hit water
 			if ( (ent->GetPhysics()->GetContents() & CONTENTS_WATER) || (tr.c.material && (tr.c.material->GetContentFlags() & CONTENTS_WATER)) ) {
 				// Apply force to the water entity that was hit

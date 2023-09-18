@@ -432,6 +432,13 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 				PlayAnim( ANIMCHANNEL_ALL, "chargedfire", parms.blendFrames );
 			} else {
 				Attack ( false, 1, spread, 0, 1.0f );
+				
+				idDict pickupSpawnArgs;
+				pickupSpawnArgs.Set("classname", "item_health_small_moveable");
+				idVec3 org = gameLocal.hitscanEndPos;
+				pickupSpawnArgs.Set("origin", org.ToString());
+				idEntity* pickup = NULL;
+				gameLocal.SpawnEntityDef(pickupSpawnArgs, &pickup, false);				
 				PlayEffect ( "fx_normalflash", barrelJointView, false );
 				PlayAnim( ANIMCHANNEL_ALL, "fire", parms.blendFrames );
 			}

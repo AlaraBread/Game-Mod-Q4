@@ -102,6 +102,8 @@ void rvWeaponRocketLauncher::Spawn ( void ) {
 	attackDict.GetFloat ( "speed", "0", guideSpeedFast );
 	guideSpeedSlow = guideSpeedFast * f;
 	
+	ammoRequired = false;
+
 	reloadRate = SEC2MS ( spawnArgs.GetFloat ( "reloadRate", ".8" ) );
 	
 	guideAccelTime = SEC2MS ( spawnArgs.GetFloat ( "lockAccelTime", ".25" ) );
@@ -221,7 +223,7 @@ void rvWeaponRocketLauncher::OnLaunchProjectile ( idProjectile* proj ) {
 	// Launch the projectile
 	idEntityPtr<idEntity> ptr;
 	ptr = proj;
-	guideEnts.Append ( ptr );	
+	guideEnts.Append ( ptr );
 }
 
 /*
@@ -445,12 +447,12 @@ stateResult_t rvWeaponRocketLauncher::State_Fire ( const stateParms_t& parms ) {
 	};	
 	switch ( parms.stage ) {
 		case STAGE_INIT:
-			nextAttackTime = gameLocal.time + (fireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));		
+			nextAttackTime = gameLocal.time + (fireRate * 0.1 * owner->PowerUpModifier ( PMOD_FIRERATE ));
 			Attack ( false, 1, spread, 0, 1.0f );
-			PlayAnim ( ANIMCHANNEL_LEGS, "fire", parms.blendFrames );	
+			//PlayAnim ( ANIMCHANNEL_LEGS, "fire", parms.blendFrames );
 			return SRESULT_STAGE ( STAGE_WAIT );
 	
-		case STAGE_WAIT:			
+		case STAGE_WAIT:
 			if ( wsfl.attack && gameLocal.time >= nextAttackTime && ( gameLocal.isClient || AmmoInClip ( ) ) && !wsfl.lowerWeapon ) {
 				SetState ( "Fire", 0 );
 				return SRESULT_DONE;
@@ -519,8 +521,8 @@ stateResult_t rvWeaponRocketLauncher::State_Rocket_Reload ( const stateParms_t& 
 	enum {
 		STAGE_INIT,
 		STAGE_WAIT,
-	};	
-	
+	};
+
 	switch ( parms.stage ) {
 		case STAGE_INIT: {
 			const char* animName;
@@ -538,8 +540,8 @@ stateResult_t rvWeaponRocketLauncher::State_Rocket_Reload ( const stateParms_t& 
 			animNum = viewModel->GetAnimator()->GetAnim ( animName );
 			if ( animNum ) {
 				idAnim* anim;
-				anim = (idAnim*)viewModel->GetAnimator()->GetAnim ( animNum );				
-				anim->SetPlaybackRate ( (float)anim->Length() / (reloadRate * owner->PowerUpModifier ( PMOD_FIRERATE )) );
+				anim = (idAnim*)viewModel->GetAnimator()->GetAnim ( animNum );
+				anim->SetPlaybackRate ( (float)anim->Length() / (reloadRate * 0.1 * owner->PowerUpModifier ( PMOD_FIRERATE )) );
 			}
 
 			PlayAnim( ANIMCHANNEL_TORSO, animName, parms.blendFrames );				

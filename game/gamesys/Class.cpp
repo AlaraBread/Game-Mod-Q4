@@ -1227,6 +1227,7 @@ void idClass::RegisterClasses( void )
 	REGISTER(idLocationSeparatorEntity); // ..\..\code\game\Misc.cpp
 	REGISTER(idMoveable); // ..\..\code\game\Moveable.cpp
 	REGISTER(idMoveableItem); // ..\..\code\game\Item.cpp
+	REGISTER(Machine);
 	REGISTER(idMover); // ..\..\code\game\Mover.cpp
 	REGISTER(idMover_Binary); // ..\..\code\game\Mover.cpp
 	REGISTER(idMover_Periodic); // ..\..\code\game\Mover.cpp

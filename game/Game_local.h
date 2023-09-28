@@ -1247,6 +1247,7 @@ const int	CINEMATIC_SKIP_DELAY	= SEC2MS( 2.0f );
 #include "Light.h"
 #include "WorldSpawn.h"
 #include "Item.h"
+#include "Machine.h" // ALARA
 #include "PlayerView.h"
 // TTimo: moved AI.h up, can't do template instanciation on forward declared-classes
 #include "ai/AI.h"

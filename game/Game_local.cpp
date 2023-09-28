@@ -1065,6 +1065,7 @@ void idGameLocal::Warning( const char *fmt, ... ) const {
 		thread->Warning( "%s", text );
 	} else {*/
 		common->Warning( "%s", text );
+		Printf("Warning: %s\n", text);
 //	}
 }
 
@@ -4965,6 +4966,7 @@ const idDeclEntityDef *idGameLocal::FindEntityDef( const char *name, bool makeDe
 		decl = declManager->FindType( DECL_ENTITYDEF, va( "%s_mp", name ), false );
 	}
 	if ( !decl ) {
+		//Printf("trying to find entity def: %s\n", name);
 		decl = declManager->FindType( DECL_ENTITYDEF, name, makeDefault );
 	}
 	return static_cast<const idDeclEntityDef *>( decl );

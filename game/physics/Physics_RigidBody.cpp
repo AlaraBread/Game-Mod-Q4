@@ -1110,7 +1110,9 @@ idPhysics_RigidBody::AddForce
 ================
 */
 void idPhysics_RigidBody::AddForce( const int id, const idVec3 &point, const idVec3 &force ) {
+	gameLocal.Printf("adding force to AF\n");
 	if ( noImpact ) {
+		gameLocal.Printf("no impact\n");
 		return;
 	}
 	current.externalForce += force;

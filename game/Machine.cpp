@@ -321,6 +321,17 @@ void Machine::Think(void) {
 	else {
 		renderEntity.suppressShadowInViewID = 0;
 	}
+	for (int i = 0; i < physicsObj.GetNumContacts(); i++) {
+		contactInfo_t contact = physicsObj.GetContact(i);
+		idEntity *entity = gameLocal.entities[contact.entityNum];
+		if (entity) {
+			idVec3 p;
+			idVec3 f;
+			f.x = -10.0;
+			entity->AddForce(this, 0, p, f);
+			gameLocal.Printf("adding force to entity\n");
+		}
+	}
 
 	if (!(simpleItem && pickedUp)) {
 		UpdateVisuals();
@@ -392,14 +403,9 @@ void Machine::Spawn(void) {
 	idVec3		vSize;
 	idVec3 size;
 	size.x = 3.0;
-	size.y = 3.0;
+	size.y = 1.0;
 	size.z = 3.0;
-	idBounds	bounds(vec3_origin-size, vec3_origin+size);
-
-	gameLocal.Printf("\n\n\n\nItem spawning with args:\n");
-	spawnArgs.Print();
-	gameLocal.Printf("-------------------------\n\n\n\n\n\n\n");
-
+	idBounds	bounds(vec3_origin - size, vec3_origin + size);
 
 	// check for triggerbounds, which allows for non-square triggers (useful for, say, a CTF flag)	 
 	if (spawnArgs.GetVector("triggerbounds", "16 16 16", vSize)) {

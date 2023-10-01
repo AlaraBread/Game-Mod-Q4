@@ -7482,10 +7482,13 @@ idPhysics_AF::AddForce
 ================
 */
 void idPhysics_AF::AddForce( const int id, const idVec3 &point, const idVec3 &force ) {
+	gameLocal.Printf("adding force to AF\n");
 	if ( noImpact ) {
+		gameLocal.Printf("no impact\n");
 		return;
 	}
 	if ( id < 0 || id >= bodies.Num() ) {
+		gameLocal.Printf("id problem\n");
 		return;
 	}
 	bodies[id]->current->externalForce.SubVec3( 0 ) += force;

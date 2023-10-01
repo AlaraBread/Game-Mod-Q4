@@ -251,6 +251,7 @@ idPhysics_Base::AddForce
 ================
 */
 void idPhysics_Base::AddForce( const int id, const idVec3 &point, const idVec3 &force ) {
+	gameLocal.Printf("adding force to base\n");
 }
 
 /*

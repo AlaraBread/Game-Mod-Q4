@@ -459,7 +459,5 @@ entityDef item_armor_large_sp
 entityDef machine {
 	"inherit"				"item_default"
 	"spawnclass"			"Machine"
-	"model"					"models/items/armor/armor_large_sp.lwo"
-	"skin"					"skins/items/armor/base_sp"
-
+	"model" 				"models/mapobjects/strogg/machines/pallet/pallet01_lo.lwo"
 }

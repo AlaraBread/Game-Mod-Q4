@@ -488,6 +488,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="game\Game.def" />
+    <None Include="pak\def\items.def" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="idlib.vcxproj">

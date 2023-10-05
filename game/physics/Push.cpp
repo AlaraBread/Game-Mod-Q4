@@ -930,6 +930,7 @@ int idPush::TryTranslatePushEntity( trace_t &results, idEntity *check, idClipMod
 		ClipEntityTranslation( results, check, clipModel, NULL, -move );
 		// if no collision with the pusher then the entity is not pushed by the pusher
 		if ( results.fraction >= 1.0f ) {
+			// this happens when we touch the conveyor but arent on it
 			return PUSH_NO;
 		}
 		// vector along which the entity is pushed
@@ -995,7 +996,7 @@ int idPush::TryTranslatePushEntity( trace_t &results, idEntity *check, idClipMod
 		}
 	}
 #endif
-
+	// this happens when we are on the conveyor
 	return PUSH_OK;
 }
 

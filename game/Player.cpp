@@ -5146,8 +5146,9 @@ bool idPlayer::GiveInventoryItem( idDict *item ) {
 // RAVEN BEGIN
 // mwhitlock: Dynamic memory consolidation
 	RV_PUSH_HEAP_MEM(this);
+	idDict *d = new idDict(*item);
 // RAVEN END
-	inventory.items.Append( new idDict( *item ) );
+	inventory.items.Append( d );
 // RAVEN BEGIN
 // mwhitlock: Dynamic memory consolidation
 	RV_POP_HEAP();

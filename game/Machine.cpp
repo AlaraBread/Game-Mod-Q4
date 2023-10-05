@@ -310,6 +310,7 @@ Machine::Think
 ================
 */
 void Machine::Think(void) {
+	gameLocal.Printf("thinking...\n");
 	if (thinkFlags & TH_PHYSICS) {
 		RunPhysics();
 		UpdateTrigger();
@@ -321,21 +322,33 @@ void Machine::Think(void) {
 	else {
 		renderEntity.suppressShadowInViewID = 0;
 	}
-	for (int i = 0; i < physicsObj.GetNumContacts(); i++) {
-		contactInfo_t contact = physicsObj.GetContact(i);
-		idEntity *entity = gameLocal.entities[contact.entityNum];
-		if (entity) {
+
+	if (!(simpleItem && pickedUp)) {
+		UpdateVisuals();
+		Present();
+	}
+}
+
+void Conveyor::Think(void) {
+	Machine::Think();
+	idLinkList<idEntity> activeEntities = gameLocal.activeEntities;
+	idLinkList<idEntity>* cur = activeEntities.ListHead();
+	idEntity* entity;
+	for (entity = gameLocal.activeEntities.Next(); entity != NULL; entity = entity->activeNode.Next()) {
+		gameLocal.Printf("found an entity\n");
+		idMat3 axis;
+		idVec3 a;
+		idVec3 b;
+		entity->GetPosition(b, axis);
+		GetPosition(a, axis);
+		if (abs(a.x-b.x) < 1.0 && abs(a.z-b.z) < 1.0) {
+			gameLocal.Printf("conveyor is touching something\n");
 			idVec3 p;
 			idVec3 f;
 			f.x = -10.0;
 			entity->AddForce(this, 0, p, f);
 			gameLocal.Printf("adding force to entity\n");
 		}
-	}
-
-	if (!(simpleItem && pickedUp)) {
-		UpdateVisuals();
-		Present();
 	}
 }
 
@@ -471,10 +484,7 @@ void Machine::Spawn(void) {
 		PostEventMS(&EV_Touch, 0, ent, NULL);
 	}
 
-	if (spawnArgs.GetBool("spin") || gameLocal.isMultiplayer) {
-		spin = true;
-		BecomeActive(TH_THINK);
-	}
+	BecomeActive(TH_THINK);
 
 	// pulse ( and therefore itemShellHandle ) was taken out and shot. do not sync
 	//pulse = !spawnArgs.GetBool( "nopulse" );

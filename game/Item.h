@@ -281,7 +281,7 @@ public:
 	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
 
 private:
-	idPhysics_RigidBody		physicsObj;
+	idPhysics_Player		physicsObj;
 
  	void					Gib( const idVec3 &dir, const char *damageDefName );
  	void					Event_Gib( const char *damageDefName );

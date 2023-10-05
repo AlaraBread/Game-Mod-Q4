@@ -49,7 +49,6 @@ public:
 	bool					simpleItem;
 	bool					pickedUp;
 	const idDeclSkin* pickupSkin;
-protected:
 
 	void					UpdateTrigger(void);
 	void					SendPickupMsg(int clientNum);
@@ -63,7 +62,6 @@ protected:
 	bool					canPickUp;
 	const idDeclSkin* skin;
 
-private:
 	idVec3					orgOrigin;
 
 	rvPhysics_Particle		physicsObj;
@@ -80,9 +78,8 @@ private:
 
 	// synced through snapshots to indicate show/hide or pickupSkin state
 	// -1 on a client means undef, 0 not ready, 1 ready
-public: // FIXME: Temp hack while Eric gets back to me about why GameState.cpp is trying to access this directly
 	int						srvReady;
-private: // FIXME: Temp hack while Eric gets back to me about why GameState.cpp is trying to access this directly
+
 	int						clReady;
 
 	int						itemPVSArea;
@@ -98,6 +95,13 @@ private: // FIXME: Temp hack while Eric gets back to me about why GameState.cpp 
 	// abahr
 	void					Event_SetGravity();
 	// RAVEN END
+};
+
+class Conveyor : public Machine {
+	CLASS_PROTOTYPE(Conveyor);
+
+public:
+	virtual void			Think(void);
 };
 
 #endif // !__GAME_MACHINE_H__

@@ -1519,8 +1519,8 @@ void idMoveableItem::Spawn( void ) {
 // RAVEN END
 	physicsObj.SetOrigin( GetPhysics()->GetOrigin() );
 	physicsObj.SetAxis( GetPhysics()->GetAxis() );
-	physicsObj.SetBouncyness( bouncyness );
-	physicsObj.SetFriction( 0.6f, 0.6f, friction );
+	//physicsObj.SetBouncyness( bouncyness );
+	//physicsObj.SetFriction( 0.6f, 0.6f, friction );
 	physicsObj.SetGravity( gameLocal.GetGravity() );
 	physicsObj.SetContents( CONTENTS_RENDERMODEL );
 	physicsObj.SetClipMask( MASK_SOLID | CONTENTS_MOVEABLECLIP );
@@ -1529,7 +1529,7 @@ void idMoveableItem::Spawn( void ) {
 // RAVEN BEGIN
 // mekberg: added
 	if ( spawnArgs.GetBool( "noimpact" ) || spawnArgs.GetBool( "notPushable" ) ) {
-		physicsObj.DisableImpact();
+		//physicsObj.DisableImpact();
 	}
 // RAVEN END
 }

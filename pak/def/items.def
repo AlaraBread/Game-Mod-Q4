@@ -456,8 +456,31 @@ entityDef item_armor_large_sp
 // ALARA START
 // (I cant be bothered to figure out how to get a seperate def file to load in)
 
-entityDef machine {
+
+entityDef item_red
+{
 	"inherit"				"item_default"
-	"spawnclass"			"Machine"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Redium"
+	"inv_icon"					"icons/red.tga"
+
+	"model"						"models/factory/red.lwo"
+}
+
+entityDef conveyor {
+	"inherit"				"item_default"
+	"spawnclass"			"rvConveyor"
 	"model" 				"models/mapobjects/strogg/machines/pallet/pallet01_lo.lwo"
 }

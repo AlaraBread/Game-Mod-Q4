@@ -434,7 +434,7 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 				Attack ( false, 1, spread, 0, 1.0f );
 
 				idDict pickupSpawnArgs;
-				pickupSpawnArgs.Set("classname", "conveyor");
+				pickupSpawnArgs.Set("classname", "machine");
 				float yaw = player->viewAngles.yaw;
 				pickupSpawnArgs.Set("angle", va("%f", yaw + 180));
 				idVec3 org = gameLocal.hitscanEndPos;

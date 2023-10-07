@@ -1252,6 +1252,112 @@ float idPush::ClipTranslationalPush( trace_t &results, idEntity *pusher, const i
 	return totalMass;
 }
 
+// ALARA BEGIN
+
+
+/*
+============
+idPush::ClipItems
+
+  Get items clipped by another entity
+============
+*/
+idEntity *idPush::ClipItems(idEntity* pusher, const int flags,
+	const idVec3& newOrigin, const idVec3& translation) {
+	int			i, listedEntities, res;
+	idEntity* check, * entityList[MAX_GENTITIES];
+	idBounds	bounds, pushBounds;
+	idVec3		clipMove, clipOrigin, oldOrigin, dir, impulse;
+	trace_t		pushResults;
+	bool		wasEnabled;
+	float		totalMass;
+	idClipModel* clipModel;
+
+	clipModel = pusher->GetPhysics()->GetClipModel();
+
+	totalMass = 0.0f;
+
+	if (translation == vec3_origin) {
+		return NULL;
+	}
+
+	dir = translation;
+	dir.Normalize();
+	dir.z += 1.0f;
+	dir *= 10.0f;
+
+	// get bounds for the whole movement
+	bounds = clipModel->GetBounds();
+	if (bounds[0].x >= bounds[1].x) {
+		return NULL;
+	}
+	pushBounds.FromBoundsTranslation(bounds, clipModel->GetOrigin(), clipModel->GetAxis(), translation);
+
+	wasEnabled = clipModel->IsEnabled();
+
+	// make sure we don't get the pushing clip model in the list
+	clipModel->Disable();
+
+	// RAVEN BEGIN
+	// ddynerman: multiple clip worlds
+	listedEntities = gameLocal.EntitiesTouchingBounds(pusher, pushBounds, -1, entityList, MAX_GENTITIES);
+	// RAVEN END
+
+		// discard entities we cannot or should not push
+	listedEntities = DiscardEntities(entityList, listedEntities, flags, pusher);
+
+	if (flags & PUSHFL_CLIP) {
+
+		// can only clip movement of a trace model
+		assert(clipModel->IsTraceModel());
+
+		// disable to be pushed entities for collision detection
+		for (i = 0; i < listedEntities; i++) {
+			entityList[i]->GetPhysics()->DisableClip();
+		}
+		for (i = 0; i < listedEntities; i++) {
+			entityList[i]->GetPhysics()->EnableClip();
+		}
+	}
+	else {
+
+		clipMove = translation;
+		clipOrigin = newOrigin;
+	}
+
+	// we have to enable the clip model because we use it during pushing
+	clipModel->Enable();
+
+	// save pusher old position
+	oldOrigin = clipModel->GetOrigin();
+
+	// try to push the entities
+	for (i = 0; i < listedEntities; i++) {
+
+		check = entityList[i];
+
+		idPhysics* physics = check->GetPhysics();
+
+		if (check->IsType(idItem::GetClassType())) {
+			return check;
+		}
+
+		if (!wasEnabled) {
+			clipModel->Disable();
+		}
+
+		return NULL;
+	}
+
+	if (!wasEnabled) {
+		clipModel->Disable();
+	}
+
+	return NULL;
+}
+
+// ALARA END
+
 /*
 ============
 idPush::ClipRotationalPush

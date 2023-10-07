@@ -471,6 +471,8 @@ entityDef item_red
 	"friction"					"0.4"
 	"bouncyness"				"0.3"
 
+	"factory_item"				"red"
+
 	"inv_carry"					"1"
 	"inv_item"					"1"
 	"inv_name"					"Redium"
@@ -483,4 +485,10 @@ entityDef conveyor {
 	"inherit"				"item_default"
 	"spawnclass"			"rvConveyor"
 	"model" 				"models/mapobjects/strogg/machines/pallet/pallet01_lo.lwo"
+}
+
+entityDef machine {
+	"inherit"				"item_default"
+	"spawnclass"	"Machine"
+	"model"			"models/mapobjects/strogg/machines/pallet/pallet01_lo.lwo"
 }

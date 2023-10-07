@@ -4966,7 +4966,6 @@ const idDeclEntityDef *idGameLocal::FindEntityDef( const char *name, bool makeDe
 		decl = declManager->FindType( DECL_ENTITYDEF, va( "%s_mp", name ), false );
 	}
 	if ( !decl ) {
-		Printf("trying to find entity def: %s\n", name);
 		decl = declManager->FindType( DECL_ENTITYDEF, name, makeDefault );
 	}
 	return static_cast<const idDeclEntityDef *>( decl );
@@ -8105,6 +8104,7 @@ int idGameLocal::EntitiesTouchingBounds	( const idEntity* ent, const idBounds &b
 	if( clipWorld ) {
 		return clipWorld->EntitiesTouchingBounds( bounds, contentMask, entityList, maxCount );
 	}
+	gameLocal.Printf("no clip world\n");
 
 	return 0;
 }

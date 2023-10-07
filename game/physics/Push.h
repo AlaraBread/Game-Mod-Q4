@@ -42,6 +42,8 @@ public:
 					// get the ith pushed entity
 	idEntity *		GetPushedEntity( int i ) const { assert( i >= 0 && i < numPushed ); return pushed[i].ent; }
 
+	idEntity* ClipItems(idEntity* pusher, const int flags, const idVec3& newOrigin, const idVec3& translation);
+
 private:
 	struct pushed_s {
 		idEntity *	ent;					// pushed entity

@@ -963,7 +963,7 @@ int idClip::ClipModelsTouchingBounds( const idBounds &bounds, int contentMask, i
 			for ( clipLink_t* link = sector->clipLinks; link && clipCount < MAX_GENTITIES; link = link->nextInSector ) {
 				idClipModel* model = link->clipModel;
 
-				if( model->checked || !model->enabled || !( model->GetContents() & contentMask ) ) {
+				if ( model->checked || !model->enabled || !(model->GetContents() & contentMask)) {
 					continue;
 				}
 
@@ -1029,7 +1029,6 @@ int idClip::EntitiesTouchingBounds( const idBounds &bounds, int contentMask, idE
 			entCount++;
 		}
 	}
-
 	return entCount;
 }
 

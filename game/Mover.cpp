@@ -5841,7 +5841,7 @@ void rvConveyor::Think ( void ) {
 
 	GetPhysics()->SetOrigin ( oldOrigin );
 	GetPhysics()->SetAxis ( oldAxis );
-	
+
 	idEntity::Think();	
 }
 

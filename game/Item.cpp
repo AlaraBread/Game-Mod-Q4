@@ -393,11 +393,6 @@ void idItem::Spawn( void ) {
 	idVec3		vSize;
 	idBounds	bounds(vec3_origin);
 
-	gameLocal.Printf("\n\n\n\nItem spawning with args:\n");
-	spawnArgs.Print();
-	gameLocal.Printf("-------------------------\n\n\n\n\n\n\n");
-
-
 	// check for triggerbounds, which allows for non-square triggers (useful for, say, a CTF flag)	 
 	if ( spawnArgs.GetVector( "triggerbounds", "16 16 16", vSize )) {
 		bounds.AddPoint(idVec3( vSize.x*0.5f,  vSize.y*0.5f, 0.0f));

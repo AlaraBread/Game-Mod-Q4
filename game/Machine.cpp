@@ -33,6 +33,8 @@ void Machine::Spawn(void) {
 	GetPhysics()->SetClipMask(MASK_SOLID);
 	GetPhysics()->EnableClip();
 
+	red = 0;
+
 	BecomeActive(TH_THINK | TH_PHYSICS);
 }
 

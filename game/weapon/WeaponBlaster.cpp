@@ -32,6 +32,7 @@ private:
 	idVec2				chargeGlow;
 	bool				fireForced;
 	int					fireHeldTime;
+	int machineIndex;
 
 	stateResult_t		State_Raise				( const stateParms_t& parms );
 	stateResult_t		State_Lower				( const stateParms_t& parms );
@@ -44,8 +45,10 @@ private:
 	CLASS_STATES_PROTOTYPE ( rvWeaponBlaster );
 };
 
-CLASS_DECLARATION( rvWeapon, rvWeaponBlaster )
+CLASS_DECLARATION(rvWeapon, rvWeaponBlaster)
 END_CLASS
+
+const int NUM_MACHINES = 3;
 
 /*
 ================
@@ -155,7 +158,9 @@ void rvWeaponBlaster::Spawn ( void ) {
 
 	fireHeldTime		= 0;
 	fireForced			= false;
-			
+	
+	machineIndex = 0;
+
 	Flashlight ( owner->IsFlashlightOn() );
 }
 
@@ -434,13 +439,22 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 				Attack ( false, 1, spread, 0, 1.0f );
 
 				idDict pickupSpawnArgs;
-				pickupSpawnArgs.Set("classname", "machine");
-				float yaw = player->viewAngles.yaw;
-				pickupSpawnArgs.Set("angle", va("%f", yaw + 180));
-				idVec3 org = gameLocal.hitscanEndPos;
-				pickupSpawnArgs.Set("origin", org.ToString());
-				idEntity* pickup = NULL;
-				gameLocal.SpawnEntityDef(pickupSpawnArgs, &pickup, false);
+				idStr classname = "";
+				if (machineIndex == 1) {
+					classname = "machine";
+				}
+				else if (machineIndex == 2) {
+					classname = "conveyor";
+				}
+				if (classname != "") {
+					pickupSpawnArgs.Set("classname", classname.c_str());
+					float yaw = player->viewAngles.yaw;
+					pickupSpawnArgs.Set("angle", va("%f", yaw + 180));
+					idVec3 org = gameLocal.hitscanEndPos;
+					pickupSpawnArgs.Set("origin", org.ToString());
+					idEntity* pickup = NULL;
+					gameLocal.SpawnEntityDef(pickupSpawnArgs, &pickup, false);
+				}
 				PlayEffect ( "fx_normalflash", barrelJointView, false );
 				PlayAnim( ANIMCHANNEL_ALL, "fire", parms.blendFrames );
 			}
@@ -476,6 +490,10 @@ stateResult_t rvWeaponBlaster::State_Flashlight ( const stateParms_t& parms ) {
 			SetStatus ( WP_FLASHLIGHT );
 			// Wait for the flashlight anim to play		
 			PlayAnim( ANIMCHANNEL_ALL, "flashlight", 0 );
+			machineIndex++;
+			if (machineIndex >= NUM_MACHINES) {
+				machineIndex = 0;
+			}
 			return SRESULT_STAGE ( FLASHLIGHT_WAIT );
 			
 		case FLASHLIGHT_WAIT:

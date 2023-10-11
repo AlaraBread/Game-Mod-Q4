@@ -48,7 +48,7 @@ private:
 CLASS_DECLARATION(rvWeapon, rvWeaponBlaster)
 END_CLASS
 
-const int NUM_MACHINES = 3;
+const int NUM_MACHINES = 5;
 
 /*
 ================
@@ -438,17 +438,21 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 			} else {
 				Attack ( false, 1, spread, 0, 1.0f );
 
+				float yaw = player->viewAngles.yaw;
 				idDict pickupSpawnArgs;
 				idStr classname = "";
 				if (machineIndex == 1) {
-					classname = "machine";
-				}
-				else if (machineIndex == 2) {
+					classname = "extractor";
+					yaw += 3.14159 / 2.0;
+				} else if (machineIndex == 2) {
 					classname = "conveyor";
+				} else if (machineIndex == 3) {
+					classname = "mixer";
+				} else if (machineIndex == 4) {
+					classname = "shifter";
 				}
 				if (classname != "") {
 					pickupSpawnArgs.Set("classname", classname.c_str());
-					float yaw = player->viewAngles.yaw;
 					pickupSpawnArgs.Set("angle", va("%f", yaw + 180));
 					idVec3 org = gameLocal.hitscanEndPos;
 					pickupSpawnArgs.Set("origin", org.ToString());
@@ -493,6 +497,25 @@ stateResult_t rvWeaponBlaster::State_Flashlight ( const stateParms_t& parms ) {
 			machineIndex++;
 			if (machineIndex >= NUM_MACHINES) {
 				machineIndex = 0;
+			}
+			if (owner) {
+				switch (machineIndex) {
+				case 0:
+					owner->selectedItem = "";
+					break;
+				case 1:
+					owner->selectedItem = "Selected: Extractor";
+					break;
+				case 2:
+					owner->selectedItem = "Selected: Conveyor";
+					break;
+				case 3:
+					owner->selectedItem = "Selected: Mixer";
+					break;
+				case 4:
+					owner->selectedItem = "Selected: Hue Shifter";
+					break;
+				}
 			}
 			return SRESULT_STAGE ( FLASHLIGHT_WAIT );
 			

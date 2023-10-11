@@ -15,12 +15,19 @@ public:
 
 	// the amount of each type of item stored inside the machine
 	int red;
+	int green;
+	int blue;
 private:
 
 	idVec3					moveDir;
 	float					moveSpeed;
 
 	void					Event_FindTargets(void);
+
+public:
+	bool extractor;
+	bool crafter;
+	int timer;
 };
 
 

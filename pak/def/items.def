@@ -478,8 +478,61 @@ entityDef item_red
 	"inv_name"					"Redium"
 	"inv_icon"					"icons/red.tga"
 
-	"model"						"models/factory/red.lwo"
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/rocketlauncher"
 }
+
+entityDef item_green
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"green"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Greenite"
+	"inv_icon"					"icons/green.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/railgun"
+}
+
+entityDef item_blue
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"blue"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Bluide"
+	"inv_icon"					"icons/blue.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/hyperblaster"
+}
+
+
 
 entityDef conveyor {
 	"inherit"				"item_default"
@@ -487,8 +540,30 @@ entityDef conveyor {
 	"model" 				"models/mapobjects/strogg/machines/pallet/pallet01_lo.lwo"
 }
 
-entityDef machine {
+entityDef extractor {
 	"inherit"				"item_default"
 	"spawnclass"	"Machine"
-	"model"			"models/mapobjects/strogg/machines/pallet/pallet01_lo.lwo"
+	"extractor"		"1"
+	"extract_classname"	"item_red"
+	"output_offset"		"0 -50 30"
+	"model"			"models/mapobjects/strogg/console/arcade_machine/a_machine.lwo"
+}
+
+
+entityDef mixer {
+	"inherit"				"item_default"
+	"spawnclass"	"Machine"
+	"crafter"		"1"
+	"mixer"			"1"
+	"output_offset"		"100 0 30"
+	"model"			"models/mapobjects/strogg/structural/pillars/pillar_01.lwo"
+}
+
+entityDef shifter {
+	"inherit"				"item_default"
+	"spawnclass"	"Machine"
+	"crafter"		"1"
+	"shifter"			"1"
+	"output_offset"		"100 0 30"
+	"model"			"models/mapobjects/strogg/structural/pillars/pillar_01.lwo"
 }

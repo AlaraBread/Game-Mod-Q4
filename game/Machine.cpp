@@ -34,6 +34,13 @@ void Machine::Spawn(void) {
 	GetPhysics()->EnableClip();
 
 	red = 0;
+	green = 0;
+	blue = 0;
+
+	crafter = spawnArgs.GetBool("crafter");
+	extractor = spawnArgs.GetBool("extractor");
+
+	timer = 0;
 
 	BecomeActive(TH_THINK | TH_PHYSICS);
 }
@@ -44,50 +51,117 @@ Machine::Think
 ================
 */
 void Machine::Think(void) {
-	trace_t pushResults;
-	idVec3	newOrigin;
-	idMat3	newAxis;
 	idVec3	oldOrigin;
 	idMat3	oldAxis;
 
 	oldOrigin = GetPhysics()->GetOrigin();
 	oldAxis = GetPhysics()->GetAxis();
 
-	idVec3 dir;
-	dir.Zero();
-	dir.x = 1.0;
+	idVec3 spawnPos = (oldOrigin + oldAxis * spawnArgs.GetVector("output_offset", "0 0 0"));
 
-	newOrigin = GetPhysics()->GetOrigin() + dir * 1.0 * MS2SEC(gameLocal.GetMSec());
-	newAxis = oldAxis;
-
-	idEntity *item = gameLocal.push.ClipItems(this, 0, GetPhysics()->GetOrigin(), dir);
-
-	if (item) {
-		idDict spawnArgs = item->spawnArgs;
-		bool consumed = true;
-		idStr item_type = spawnArgs.GetString("factory_item", "");
-		gameLocal.Printf("item type: %s\n", item_type.c_str());
-		if (item_type == "red") {
-			red++;
-		} else {
-			consumed = false;
-		}
-		if (consumed) {
-			item->PostEventMS(&EV_Remove, 0);
+	if (extractor) {
+		timer++;
+		if (timer >= 100) {
+			timer = 0;
+			idDict args;
+			args.Set("classname", spawnArgs.GetString("extract_classname"));
+			args.Set("origin", spawnPos.ToString());
+			idEntity* item = NULL;
+			gameLocal.SpawnEntityDef(args, &item, false);
 		}
 	}
 
-	GetPhysics()->SetOrigin(oldOrigin);
-	GetPhysics()->SetAxis(oldAxis);
+	if (crafter) {
+		// consume items
+		idVec3	newOrigin;
+		idMat3	newAxis;
+		idVec3 dir;
+		dir.Zero();
+		dir.z = 1.0;
 
-	if (red >= 3) {
-		red = 0;
-		idDict args;
-		args.Set("classname", "item_health_small_moveable");
-		idVec3 org = oldOrigin;
-		args.Set("origin", org.ToString());
-		idEntity* item = NULL;
-		gameLocal.SpawnEntityDef(args, &item, false);
+		newOrigin = GetPhysics()->GetOrigin() + dir;
+		newAxis = oldAxis;
+		idEntity* item = gameLocal.push.ClipItems(this, 0, GetPhysics()->GetOrigin(), dir);
+		if (item) {
+			idDict spawnArgs = item->spawnArgs;
+			bool consumed = true;
+			idStr item_type = spawnArgs.GetString("factory_item", "");
+			if (item_type == "red") {
+				red++;
+			} else if (item_type == "green") {
+				green++;
+			} else if (item_type == "blue") {
+				blue++;
+			} else {
+				consumed = false;
+			}
+			if (consumed) {
+				item->PostEventMS(&EV_Remove, 0);
+			}
+		}
+		GetPhysics()->SetOrigin(oldOrigin);
+		GetPhysics()->SetAxis(oldAxis);
+
+		// craft items
+		if (spawnArgs.GetBool("mixer")) {
+			if (red >= 2 && green >= 2) {
+				red = 0;
+				green = 0;
+
+				idDict args;
+				args.Set("classname", "item_yellow");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			} else if (red >= 2 && blue >= 2) {
+				red = 0;
+				blue = 0;
+
+				idDict args;
+				args.Set("classname", "item_magenta");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			} else if (green >= 2 && blue >= 2) {
+				green = 0;
+				blue = 0;
+
+				idDict args;
+				args.Set("classname", "item_cyan");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+		}
+		if (spawnArgs.GetBool("shifter")) {
+			if (red >= 2) {
+				red = 0;
+
+				idDict args;
+				args.Set("classname", "item_green");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+			else if (green >= 2) {
+				green = 0;
+
+				idDict args;
+				args.Set("classname", "item_blue");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+			else if (blue >= 2) {
+				blue = 0;
+
+				idDict args;
+				args.Set("classname", "item_red");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+		}
 	}
 
 	idEntity::Think();

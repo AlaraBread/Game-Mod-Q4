@@ -3387,10 +3387,26 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 idPlayer::UpdateHudStats
 ===============
 */
-void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
+void idPlayer::UpdateHudStats(idUserInterface* _hud) {
 	int temp;
-	
-	assert ( _hud );
+
+	assert(_hud);
+
+	idStr item_texts[6] = {"red", "green", "blue", "cyan", "magenta", "yellow"};
+	for (int j = 0; j < 6; j++) {
+		int item_count = 0;
+		idStr item_text = item_texts[j];
+
+		for (int i = 0; i < inventory.items.Num(); i++) {
+			if (item_text == inventory.items[i]->GetString("factory_item")) {
+				item_count++;
+			}
+		}
+
+		_hud->SetStateInt(item_text.c_str(), item_count);
+	}
+
+	_hud->SetStateString("selected_item", selectedItem.c_str());
 
 	temp = _hud->State().GetInt ( "player_health", "-1" );
 	if ( temp != health ) {		

@@ -589,6 +589,7 @@ bool idItem::GiveToPlayer( idPlayer *player ) {
 	}
 
 	if ( spawnArgs.GetBool( "inv_carry" ) ) {
+		gameLocal.Printf("inv carry\n");
 		return player->GiveInventoryItem( &spawnArgs );
 	} 
 	

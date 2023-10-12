@@ -32,7 +32,6 @@ private:
 	idVec2				chargeGlow;
 	bool				fireForced;
 	int					fireHeldTime;
-	int machineIndex;
 
 	stateResult_t		State_Raise				( const stateParms_t& parms );
 	stateResult_t		State_Lower				( const stateParms_t& parms );
@@ -48,7 +47,6 @@ private:
 CLASS_DECLARATION(rvWeapon, rvWeaponBlaster)
 END_CLASS
 
-const int NUM_MACHINES = 5;
 
 /*
 ================
@@ -158,8 +156,6 @@ void rvWeaponBlaster::Spawn ( void ) {
 
 	fireHeldTime		= 0;
 	fireForced			= false;
-	
-	machineIndex = 0;
 
 	Flashlight ( owner->IsFlashlightOn() );
 }
@@ -436,20 +432,29 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 				PlayEffect ( "fx_chargedflash", barrelJointView, false );
 				PlayAnim( ANIMCHANNEL_ALL, "chargedfire", parms.blendFrames );
 			} else {
+				if (!player) {
+					fireHeldTime = 0;
+					SetState("Idle", 4);
+					return SRESULT_DONE;
+				}
+				int itemCounts[NUM_MACHINES];
+				player->getItemCounts(itemCounts);
+
+				if (player->machineIndex != 0 && itemCounts[player->machineIndex] <= 0) {
+					fireHeldTime = 0;
+					SetState("Idle", 4);
+					return SRESULT_DONE;
+				}
+
 				Attack ( false, 1, spread, 0, 1.0f );
 
 				float yaw = player->viewAngles.yaw;
 				idDict pickupSpawnArgs;
-				idStr classname = "";
-				if (machineIndex == 1) {
-					classname = "extractor";
+				idStr classname = player->getMachineClassname(player->machineIndex);
+				switch (player->machineIndex) {
+				case 4:
 					yaw += 3.14159 / 2.0;
-				} else if (machineIndex == 2) {
-					classname = "conveyor";
-				} else if (machineIndex == 3) {
-					classname = "mixer";
-				} else if (machineIndex == 4) {
-					classname = "shifter";
+					break;
 				}
 				if (classname != "") {
 					pickupSpawnArgs.Set("classname", classname.c_str());
@@ -458,6 +463,8 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 					pickupSpawnArgs.Set("origin", org.ToString());
 					idEntity* pickup = NULL;
 					gameLocal.SpawnEntityDef(pickupSpawnArgs, &pickup, false);
+
+					player->removeItem(player->getMachineClassname(player->machineIndex), 1);
 				}
 				PlayEffect ( "fx_normalflash", barrelJointView, false );
 				PlayAnim( ANIMCHANNEL_ALL, "fire", parms.blendFrames );
@@ -494,28 +501,12 @@ stateResult_t rvWeaponBlaster::State_Flashlight ( const stateParms_t& parms ) {
 			SetStatus ( WP_FLASHLIGHT );
 			// Wait for the flashlight anim to play		
 			PlayAnim( ANIMCHANNEL_ALL, "flashlight", 0 );
-			machineIndex++;
-			if (machineIndex >= NUM_MACHINES) {
-				machineIndex = 0;
-			}
 			if (owner) {
-				switch (machineIndex) {
-				case 0:
-					owner->selectedItem = "";
-					break;
-				case 1:
-					owner->selectedItem = "Selected: Extractor";
-					break;
-				case 2:
-					owner->selectedItem = "Selected: Conveyor";
-					break;
-				case 3:
-					owner->selectedItem = "Selected: Mixer";
-					break;
-				case 4:
-					owner->selectedItem = "Selected: Hue Shifter";
-					break;
+				owner->machineIndex++;
+				if (owner->machineIndex >= NUM_MACHINES) {
+					owner->machineIndex = 0;
 				}
+				owner->updateSelected();
 			}
 			return SRESULT_STAGE ( FLASHLIGHT_WAIT );
 			

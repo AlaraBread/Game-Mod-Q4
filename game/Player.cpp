@@ -193,6 +193,83 @@ const idVec4 marineHitscanTint( 0.69f, 1.0f, 0.4f, 1.0f );
 const idVec4 stroggHitscanTint( 1.0f, 0.5f, 0.0f, 1.0f );
 const idVec4 defaultHitscanTint( 0.4f, 1.0f, 0.4f, 1.0f );
 
+const char* MACHINE_CLASSNAMES[NUM_MACHINES] = {
+	"",
+	"item_red",
+	"item_green",
+	"item_blue",
+	"conveyor",
+	"extractor",
+	"shifter",
+	"mixer",
+};
+const char* MACHINE_SELECTED[NUM_MACHINES] = {
+	"",
+	"Selected: Redium",
+	"Selected: Greenite",
+	"Selected: Blueide",
+	"Selected: Conveyor",
+	"Selected: Extractor",
+	"Selected: Shifter",
+	"Selected: Mixer",
+};
+
+const char* idPlayer::getMachineClassname(int i) {
+	return MACHINE_CLASSNAMES[i];
+}
+
+void idPlayer::removeItem(idStr classname, int count) {
+	for (int i = 0; i < inventory.items.Num(); i++) {
+		idDict* item = inventory.items[i];
+		if (!item) {
+			continue;
+		}
+		for (int j = 1; j < NUM_MACHINES; j++) {
+			if (classname == MACHINE_CLASSNAMES[j]) {
+				inventory.items.RemoveIndex(i);
+				i--;
+				count--;
+				if (count <= 0) {
+					return;
+				}
+			}
+		}
+	}
+	updateSelected();
+}
+
+void idPlayer::updateSelected() {
+	idStr t = MACHINE_SELECTED[machineIndex];
+	int itemCounts[NUM_MACHINES];
+	getItemCounts(itemCounts);
+	if (machineIndex != 0) {
+		t += " x";
+		t += itemCounts[machineIndex];
+	}
+	selectedItem = t.c_str();
+}
+
+
+void idPlayer::getItemCounts(int* itemCounts) {
+	idList<idDict*> inv = inventory.items;
+	for (int i = 0; i < NUM_MACHINES; i++) {
+		itemCounts[i] = 0;
+	}
+	for (int i = 0; i < inv.Num(); i++) {
+		idDict* item = inv[i];
+		if (!item) {
+			continue;
+		}
+		for (int j = 1; j < NUM_MACHINES; j++) {
+			idStr c = item->GetString("classname");
+			if (c.Cmp(MACHINE_CLASSNAMES[j]) == 0) {
+				itemCounts[j] += 1;
+			}
+		}
+	}
+}
+
+
 /*
 ==============
 idInventory::Clear
@@ -1809,6 +1886,8 @@ void idPlayer::Spawn( void ) {
 	idStr		temp;
 	idBounds	bounds;
 
+	machineIndex = 0;
+
 	if ( entityNumber >= MAX_CLIENTS ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
 	}
@@ -2055,6 +2134,8 @@ void idPlayer::Spawn( void ) {
 //RITUAL END
 
 	itemCosts = static_cast< const idDeclEntityDef * >( declManager->FindType( DECL_ENTITYDEF, "ItemCostConstants", false ) );
+
+	updateSelected();
 }
 
 /*
@@ -5170,6 +5251,9 @@ bool idPlayer::GiveInventoryItem( idDict *item ) {
 	RV_POP_HEAP();
 // RAVEN END
 
+	gameLocal.Printf("in giveinvitem\n");
+	updateSelected();
+
 	if ( hud ) {
 		const char *itemName = common->GetLocalizedString( item->GetString( "inv_name" ) );
 		hud->SetStateString ( "itemtext", itemName );
@@ -5337,6 +5421,7 @@ idPlayer::RemoveInventoryItem
 void idPlayer::RemoveInventoryItem( idDict *item ) {
 	inventory.items.Remove( item );
 	delete item;
+	updateSelected();
 }
 
 /*
@@ -5391,7 +5476,6 @@ void idPlayer::GiveItem( const char *itemname ) {
 	if ( health > 0 && idStr::Icmp( itemname, "ammorefill" ) ) {
 		gameLocal.SpawnEntityDef( args );
 	}
-
 }
 
 /*
@@ -9415,6 +9499,8 @@ void idPlayer::Think( void ) {
 		usercmd.upmove = 0;
 	}
 	
+	usercmd;
+
 	// zooming
 	bool zoom = (usercmd.buttons & BUTTON_ZOOM) && CanZoom();
 	if ( zoom != zoomed ) {

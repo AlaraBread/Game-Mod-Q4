@@ -1154,11 +1154,19 @@ private:
 	stateResult_t			State_Legs_Land					( const stateParms_t& parms );
 	stateResult_t			State_Legs_Dead					( const stateParms_t& parms );
 	
-	public:
-		idStr selectedItem;
+public:
+	idStr selectedItem;
+	int machineIndex;
+
+	void removeItem(idStr classname, int count);
+	void updateSelected();
+	void getItemCounts(int* itemCounts);
+	const char* getMachineClassname(int i);
 
  	CLASS_STATES_PROTOTYPE( idPlayer );
 };
+
+const int NUM_MACHINES = 8;
 
 ID_INLINE bool idPlayer::IsBeingTalkedTo( void ) {
 	return talkingNPC!=NULL;

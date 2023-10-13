@@ -1150,6 +1150,7 @@ public:
 	const char* getMachineClassname(int i);
 	void craft();
 	bool isCrafting();
+	char* idPlayer::craftingName();
 
  	CLASS_STATES_PROTOTYPE( idPlayer );
 };

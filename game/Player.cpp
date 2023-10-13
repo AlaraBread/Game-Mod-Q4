@@ -9442,6 +9442,24 @@ bool idPlayer::isCrafting() {
 		(usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3);
 }
 
+char* idPlayer::craftingName() {
+	int itemCounts[NUM_MACHINES];
+	getItemCounts(itemCounts);
+	if (usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3) {
+		return "Extractor";
+	}
+	if (usercmd.forwardmove < 0 && itemCounts[ITEM_RED] >= 1) {
+		return "Conveyor";
+	}
+	if (usercmd.rightmove > 0 && itemCounts[ITEM_RED] >= 3) {
+		return "Shifter";
+	}
+	if (usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3) {
+		return "Mixer";
+	}
+	return "";
+}
+
 /*
 ==============
 idPlayer::Think
@@ -9458,6 +9476,15 @@ void idPlayer::Think( void ) {
 		craftingProgress++;
 		craft();
 	}
+	else {
+		craftingProgress = 0;
+	}
+
+	hud->SetStateFloat("crafting_progress", ((float)craftingProgress)/100.0);
+	idStr p = "";
+	sprintf(p, "%d%%", (int)craftingProgress);
+	hud->SetStateString("crafting_percent", p);
+	hud->SetStateString("crafting_name", craftingName());
 
 	if ( talkingNPC ) {
 		if ( !talkingNPC.IsValid() ) {

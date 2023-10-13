@@ -32,6 +32,7 @@ private:
 	idVec2				chargeGlow;
 	bool				fireForced;
 	int					fireHeldTime;
+	int timer;
 
 	stateResult_t		State_Raise				( const stateParms_t& parms );
 	stateResult_t		State_Lower				( const stateParms_t& parms );
@@ -147,6 +148,7 @@ rvWeaponBlaster::Spawn
 ================
 */
 void rvWeaponBlaster::Spawn ( void ) {
+	timer = 0;
 	viewModel->SetShaderParm ( BLASTER_SPARM_CHARGEGLOW, 0 );
 	SetState ( "Raise", 0 );
 	
@@ -500,26 +502,32 @@ stateResult_t rvWeaponBlaster::State_Flashlight ( const stateParms_t& parms ) {
 		case FLASHLIGHT_INIT:			
 			SetStatus ( WP_FLASHLIGHT );
 			// Wait for the flashlight anim to play		
-			PlayAnim( ANIMCHANNEL_ALL, "flashlight", 0 );
+			PlayAnim( ANIMCHANNEL_ALL, "flashlight", 0);
 			if (owner) {
-				owner->machineIndex++;
+				if (owner->IsCrouching()) {
+					owner->machineIndex--;
+				}
+				else {
+					owner->machineIndex++;
+				}
 				if (owner->machineIndex >= NUM_MACHINES) {
 					owner->machineIndex = 0;
+				}
+				if (owner->machineIndex < 0) {
+					owner->machineIndex = NUM_MACHINES - 1;
 				}
 				owner->updateSelected();
 			}
 			return SRESULT_STAGE ( FLASHLIGHT_WAIT );
 			
 		case FLASHLIGHT_WAIT:
-			if ( !AnimDone ( ANIMCHANNEL_ALL, 4 ) ) {
+			if (timer == 0) {
+				timer++;
 				return SRESULT_WAIT;
 			}
+			timer = 0;
 			
-			if ( owner->IsFlashlightOn() ) {
-				Flashlight ( false );
-			} else {
-				Flashlight ( true );
-			}
+			Flashlight ( false );
 			
 			SetState ( "Idle", 4 );
 			return SRESULT_DONE;

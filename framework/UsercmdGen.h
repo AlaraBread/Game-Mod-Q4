@@ -37,11 +37,6 @@ const int BUTTON_TOURNEY		= BIT(7);
 // twhitaker: strafe
 const int BUTTON_STRAFE			= BIT(8);
 // RAVEN END
-const int BUTTON_CRAFT_1 = BIT(9);
-const int BUTTON_CRAFT_2 = BIT(10);
-const int BUTTON_CRAFT_3 = BIT(11);
-const int BUTTON_CRAFT_4 = BIT(12);
-const int BUTTON_CRAFT_5 = BIT(13);
 
 // usercmd_t->impulse commands
 const int IMPULSE_0				= 0;			// weap 0

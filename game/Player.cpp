@@ -193,6 +193,17 @@ const idVec4 marineHitscanTint( 0.69f, 1.0f, 0.4f, 1.0f );
 const idVec4 stroggHitscanTint( 1.0f, 0.5f, 0.0f, 1.0f );
 const idVec4 defaultHitscanTint( 0.4f, 1.0f, 0.4f, 1.0f );
 
+enum {
+	ITEM_ZERO,
+	ITEM_RED,
+	ITEM_GREEN,
+	ITEM_BLUE,
+	ITEM_CONVEYOR,
+	ITEM_EXTRACTOR,
+	ITEM_SHIFTER,
+	ITEM_MIXER,
+};
+
 const char* MACHINE_CLASSNAMES[NUM_MACHINES] = {
 	"",
 	"item_red",
@@ -1887,6 +1898,7 @@ void idPlayer::Spawn( void ) {
 	idBounds	bounds;
 
 	machineIndex = 0;
+	craftingProgress = 0;
 
 	if ( entityNumber >= MAX_CLIENTS ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
@@ -2136,6 +2148,13 @@ void idPlayer::Spawn( void ) {
 	itemCosts = static_cast< const idDeclEntityDef * >( declManager->FindType( DECL_ENTITYDEF, "ItemCostConstants", false ) );
 
 	updateSelected();
+	
+	idDict red;
+	red.Set("classname", "item_red");
+	red.Set("factory_item", "red");
+	for (int i = 0; i < 10; i++) {
+		GiveInventoryItem(&red);
+	}
 }
 
 /*
@@ -3486,6 +3505,8 @@ void idPlayer::UpdateHudStats(idUserInterface* _hud) {
 
 		_hud->SetStateInt(item_text.c_str(), item_count);
 	}
+
+	updateSelected();
 
 	_hud->SetStateString("selected_item", selectedItem.c_str());
 
@@ -9376,6 +9397,51 @@ void idPlayer::LoadDeferredModel( void ) {
 	}
 }
 
+void idPlayer::craft() {
+	if (craftingProgress < 100) {
+		return;
+	}
+	craftingProgress = 0;
+
+	int itemCounts[NUM_MACHINES];
+	getItemCounts(itemCounts);
+	if (usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3) {
+		removeItem("item_red", 3);
+		idDict dict;
+		dict.Set("classname", "extractor");
+		GiveInventoryItem(&dict);
+	}
+	else if (usercmd.forwardmove < 0 && itemCounts[ITEM_RED] >= 1) {
+		removeItem("item_red", 1);
+		idDict dict;
+		dict.Set("classname", "conveyor");
+		GiveInventoryItem(&dict);
+	}
+	else if (usercmd.rightmove > 0 && itemCounts[ITEM_RED] >= 3) {
+		removeItem("item_red", 3);
+		idDict dict;
+		dict.Set("classname", "shifter");
+		GiveInventoryItem(&dict);
+	}
+	else if (usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3) {
+		removeItem("item_red", 3);
+		removeItem("item_green", 3);
+		idDict dict;
+		dict.Set("classname", "mixer");
+		GiveInventoryItem(&dict);
+	}
+}
+
+bool idPlayer::isCrafting() {
+	int itemCounts[NUM_MACHINES];
+	getItemCounts(itemCounts);
+	return
+		(usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3) ||
+		(usercmd.forwardmove < 0 && itemCounts[ITEM_RED] >= 1) ||
+		(usercmd.rightmove > 0 && itemCounts[ITEM_RED] >= 3) ||
+		(usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3);
+}
+
 /*
 ==============
 idPlayer::Think
@@ -9386,6 +9452,13 @@ Called every tic for each player
 void idPlayer::Think( void ) {
 	renderEntity_t *headRenderEnt;
  
+	hud->SetStateBool("crafting_screen", physicsObj.IsCrouching());
+	
+	if (physicsObj.IsCrouching() && isCrafting()) {
+		craftingProgress++;
+		craft();
+	}
+
 	if ( talkingNPC ) {
 		if ( !talkingNPC.IsValid() ) {
 			talkingNPC = NULL;
@@ -9746,6 +9819,8 @@ void idPlayer::Think( void ) {
 		inBuyZone = false;
 
 	inBuyZonePrev = false;
+
+
 }
 
 /*

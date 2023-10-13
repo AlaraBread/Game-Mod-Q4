@@ -533,6 +533,81 @@ entityDef item_blue
 }
 
 
+entityDef item_yellow
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"yellow"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Yellorite"
+	"inv_icon"					"icons/yellow.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/lightninggun"
+}
+
+entityDef item_magenta
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"magenta"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Magentite"
+	"inv_icon"					"icons/magenta.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/dmg"
+}
+
+entityDef item_cyan
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"cyan"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Cyanide"
+	"inv_icon"					"icons/cyan.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/nailgun"
+}
+
 
 entityDef conveyor {
 	"inherit"				"item_default"

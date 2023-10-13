@@ -1157,11 +1157,14 @@ private:
 public:
 	idStr selectedItem;
 	int machineIndex;
+	int craftingProgress;
 
 	void removeItem(idStr classname, int count);
 	void updateSelected();
 	void getItemCounts(int* itemCounts);
 	const char* getMachineClassname(int i);
+	void craft();
+	bool isCrafting();
 
  	CLASS_STATES_PROTOTYPE( idPlayer );
 };

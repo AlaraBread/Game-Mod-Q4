@@ -244,78 +244,6 @@ windowDef Desktop
 			matcolor	1*guitable_10_5[time*0.002],0,0,1
 			shear	0,-.22
 		}
-		windowDef red_amount
-		{
-			rect	0,25,100,30
-			visible	1
-			forecolor	0.862,0.917,0.760,1
-			text	"gui::red"
-			textscale	0.5
-			font	"fonts/chain"
-			shear	0,-.22
-			textalign	2
-			notime	1
-		}
-		windowDef red_text
-		{
-			rect	0,0,100,30
-			visible	1
-			forecolor	0.862,0.917,0.760,1
-			text	Redium
-			textscale	0.5
-			font	"fonts/chain"
-			shear	0,-.22
-			textalign	2
-			notime	1
-		}
-		windowDef green_text
-		{
-			rect	0,50,110,30
-			visible	1
-			forecolor	0.862,0.917,0.760,1
-			text	Greenite
-			textscale	0.5
-			font	"fonts/chain"
-			shear	0,-.22
-			textalign	2
-			notime	1
-		}
-		windowDef green_amount
-		{
-			rect	0,75,100,30
-			visible	1
-			forecolor	0.862,0.917,0.760,1
-			text	"gui::green"
-			textscale	0.5
-			font	"fonts/chain"
-			shear	0,-.22
-			textalign	2
-			notime	1
-		}
-		windowDef blue_text
-		{
-			rect	0,100,100,30
-			visible	1
-			forecolor	0.862,0.917,0.760,1
-			text	Bluide
-			textscale	0.5
-			font	"fonts/chain"
-			shear	0,-.22
-			textalign	2
-			notime	1
-		}
-		windowDef blue_amount
-		{
-			rect	0,125,100,30
-			visible	1
-			forecolor	0.862,0.917,0.760,1
-			text	"gui::blue"
-			textscale	0.5
-			font	"fonts/chain"
-			shear	0,-.22
-			textalign	2
-			notime	1
-		}
 		windowDef selected_item
 		{
 			rect	155,336,362,30
@@ -1191,7 +1119,7 @@ windowDef Desktop
 	windowDef p_radio
 	{
 		rect	0,0,640,480
-		visible	1
+		visible	0
 		windowDef radio_backbar
 		{
 			rect	520,5,113,28
@@ -1952,5 +1880,82 @@ windowDef Desktop
 			set "p_exit_level::visible" "0";
 		}
 
+	}
+	windowDef p_crafting
+	{
+		rect	0,0,640,480
+		visible	("gui::crafting_screen" == 1 )
+		windowDef red_amount
+		{
+			rect	1,26,100,30
+			visible	1
+			forecolor	0.862,0.917,0.760,1
+			text	"gui::red"
+			textscale	0.5
+			font	"fonts/chain"
+			shear	0,-.22
+			textalign	2
+			notime	1
+		}
+		windowDef red_text
+		{
+			rect	1,0,100,30
+			visible	1
+			forecolor	0.862,0.917,0.760,1
+			text	Redium
+			textscale	0.5
+			font	"fonts/chain"
+			shear	0,-.22
+			textalign	2
+			notime	1
+		}
+		windowDef green_text
+		{
+			rect	1,50,110,30
+			visible	1
+			forecolor	0.862,0.917,0.760,1
+			text	Greenite
+			textscale	0.5
+			font	"fonts/chain"
+			shear	0,-.22
+			textalign	2
+			notime	1
+		}
+		windowDef green_amount
+		{
+			rect	1,75,100,30
+			visible	1
+			forecolor	0.862,0.917,0.760,1
+			text	"gui::green"
+			textscale	0.5
+			font	"fonts/chain"
+			shear	0,-.22
+			textalign	2
+			notime	1
+		}
+		windowDef blue_text
+		{
+			rect	1,100,100,30
+			visible	1
+			forecolor	0.862,0.917,0.760,1
+			text	Bluide
+			textscale	0.5
+			font	"fonts/chain"
+			shear	0,-.22
+			textalign	2
+			notime	1
+		}
+		windowDef blue_amount
+		{
+			rect	1,125,100,30
+			visible	1
+			forecolor	0.862,0.917,0.760,1
+			text	"gui::blue"
+			textscale	0.5
+			font	"fonts/chain"
+			shear	0,-.22
+			textalign	2
+			notime	1
+		}
 	}
 }

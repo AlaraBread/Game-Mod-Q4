@@ -5839,6 +5839,23 @@ void rvConveyor::Think ( void ) {
 	gameLocal.push.ClipPush( pushResults, this, 0, 
 							 GetPhysics()->GetOrigin(), oldAxis, newOrigin, newAxis );
 
+	idVec3 dir;
+	dir.Zero();
+	dir.z = 1.0;
+	idEntity *item = gameLocal.push.ClipItems(this, 0, newOrigin, dir);
+
+	if (item) {
+		idDict itemSpawnArgs = item->spawnArgs;
+		if (itemSpawnArgs.GetBool("killme")) {
+			idPlayer* player = gameLocal.GetLocalPlayer();
+			if (player) {
+				player->GiveInventoryItem(&spawnArgs);
+			}
+			item->PostEventMS(&EV_Remove, 0);
+			PostEventMS(&EV_Remove, 0);
+		}
+	}
+
 	GetPhysics()->SetOrigin ( oldOrigin );
 	GetPhysics()->SetAxis ( oldAxis );
 

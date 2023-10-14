@@ -216,7 +216,7 @@ const char* MACHINE_SELECTED[NUM_MACHINES] = {
 	"Selected: Cyanide",
 	"Selected: Conveyor",
 	"Selected: Extractor",
-	"Selected: Shifter",
+	"Selected: Hue Shifter",
 	"Selected: Mixer",
 };
 
@@ -225,20 +225,16 @@ const char* idPlayer::getMachineClassname(int i) {
 }
 
 void idPlayer::removeItem(idStr classname, int count) {
-	for (int i = 0; i < inventory.items.Num(); i++) {
+	for (int i = 0; i < inventory.items.Num() && count > 0; i++) {
 		idDict* item = inventory.items[i];
 		if (!item) {
 			continue;
 		}
-		for (int j = 1; j < NUM_MACHINES; j++) {
-			if (classname == MACHINE_CLASSNAMES[j]) {
-				inventory.items.RemoveIndex(i);
-				i--;
-				count--;
-				if (count <= 0) {
-					return;
-				}
-			}
+		idStr item_classname = item->GetString("classname");
+		if (classname == item_classname) {
+			inventory.items.RemoveIndex(i);
+			i--;
+			count--;
 		}
 	}
 	updateSelected();
@@ -5251,21 +5247,21 @@ void idPlayer::GiveWeaponMod ( const char* weaponmod ) {
 idPlayer::GiveInventoryItem
 ===============
 */
-bool idPlayer::GiveInventoryItem( idDict *item ) {
-	if ( gameLocal.isMultiplayer && spectating ) {
+bool idPlayer::GiveInventoryItem(idDict* item) {
+	if (gameLocal.isMultiplayer && spectating) {
 		return false;
 	}
 
-// RAVEN BEGIN
-// mwhitlock: Dynamic memory consolidation
+	// RAVEN BEGIN
+	// mwhitlock: Dynamic memory consolidation
 	RV_PUSH_HEAP_MEM(this);
-	idDict *d = new idDict(*item);
-// RAVEN END
-	inventory.items.Append( d );
-// RAVEN BEGIN
-// mwhitlock: Dynamic memory consolidation
+	idDict* d = new idDict(*item);
+	// RAVEN END
+	inventory.items.Append(d);
+	// RAVEN BEGIN
+	// mwhitlock: Dynamic memory consolidation
 	RV_POP_HEAP();
-// RAVEN END
+	// RAVEN END
 
 	updateSelected();
 
@@ -9453,7 +9449,7 @@ Called every tic for each player
 */
 void idPlayer::Think( void ) {
 	renderEntity_t *headRenderEnt;
- 
+
 	hud->SetStateBool("crafting_screen", physicsObj.IsCrouching());
 	
 	char* crafting_name = craftingName();

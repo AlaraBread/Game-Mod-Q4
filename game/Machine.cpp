@@ -166,8 +166,8 @@ void Machine::Think(void) {
 		}
 	}
 	if (item) {
-		idDict spawnArgs = item->spawnArgs;
-		if (spawnArgs.GetBool("killme")) {
+		idDict itemSpawnArgs = item->spawnArgs;
+		if (itemSpawnArgs.GetBool("killme")) {
 			idPlayer *player = gameLocal.GetLocalPlayer();
 			if (player) {
 				player->GiveInventoryItem(&spawnArgs);

@@ -453,22 +453,22 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 				float yaw = player->viewAngles.yaw;
 				idDict pickupSpawnArgs;
 				idStr classname = player->getMachineClassname(player->machineIndex);
+				
 				switch (player->machineIndex) {
-				case ITEM_EXTRACTOR:
 				case ITEM_CONVEYOR:
-					yaw += 3.14159 / 2.0;
+					pickupSpawnArgs.SetFloat("moveAngle", yaw+180.0);
+				case ITEM_EXTRACTOR:
+					yaw += 90.0;
 					break;
 				}
-				if (classname != "") {
-					pickupSpawnArgs.Set("classname", classname.c_str());
-					pickupSpawnArgs.Set("angle", va("%f", yaw + 180));
-					idVec3 org = gameLocal.hitscanEndPos;
-					pickupSpawnArgs.Set("origin", org.ToString());
-					idEntity* pickup = NULL;
-					gameLocal.SpawnEntityDef(pickupSpawnArgs, &pickup, false);
+				pickupSpawnArgs.Set("classname", classname.c_str());
+				pickupSpawnArgs.Set("angle", va("%f", yaw + 180));
+				idVec3 org = gameLocal.hitscanEndPos;
+				pickupSpawnArgs.Set("origin", org.ToString());
+				idEntity* pickup = NULL;
+				gameLocal.SpawnEntityDef(pickupSpawnArgs, &pickup, false);
 
-					player->removeItem(player->getMachineClassname(player->machineIndex), 1);
-				}
+					player->removeItem(classname, 1);
 				PlayEffect ( "fx_normalflash", barrelJointView, false );
 				PlayAnim( ANIMCHANNEL_ALL, "fire", parms.blendFrames );
 			}

@@ -1149,13 +1149,26 @@ public:
 	void getItemCounts(int* itemCounts);
 	const char* getMachineClassname(int i);
 	void craft();
-	bool isCrafting();
 	char* idPlayer::craftingName();
 
  	CLASS_STATES_PROTOTYPE( idPlayer );
 };
 
-const int NUM_MACHINES = 8;
+const int NUM_MACHINES = 11;
+
+enum {
+	ITEM_ZERO,
+	ITEM_RED,
+	ITEM_GREEN,
+	ITEM_BLUE,
+	ITEM_YELLOW,
+	ITEM_MAGENTA,
+	ITEM_CYAN,
+	ITEM_CONVEYOR,
+	ITEM_EXTRACTOR,
+	ITEM_SHIFTER,
+	ITEM_MIXER,
+};
 
 ID_INLINE bool idPlayer::IsBeingTalkedTo( void ) {
 	return talkingNPC!=NULL;

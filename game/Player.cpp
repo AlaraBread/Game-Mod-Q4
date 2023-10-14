@@ -193,22 +193,14 @@ const idVec4 marineHitscanTint( 0.69f, 1.0f, 0.4f, 1.0f );
 const idVec4 stroggHitscanTint( 1.0f, 0.5f, 0.0f, 1.0f );
 const idVec4 defaultHitscanTint( 0.4f, 1.0f, 0.4f, 1.0f );
 
-enum {
-	ITEM_ZERO,
-	ITEM_RED,
-	ITEM_GREEN,
-	ITEM_BLUE,
-	ITEM_CONVEYOR,
-	ITEM_EXTRACTOR,
-	ITEM_SHIFTER,
-	ITEM_MIXER,
-};
-
 const char* MACHINE_CLASSNAMES[NUM_MACHINES] = {
 	"",
 	"item_red",
 	"item_green",
 	"item_blue",
+	"item_yellow",
+	"item_magenta",
+	"item_cyan",
 	"conveyor",
 	"extractor",
 	"shifter",
@@ -219,6 +211,9 @@ const char* MACHINE_SELECTED[NUM_MACHINES] = {
 	"Selected: Redium",
 	"Selected: Greenite",
 	"Selected: Blueide",
+	"Selected: Yellorite",
+	"Selected: Magentium",
+	"Selected: Cyanide",
 	"Selected: Conveyor",
 	"Selected: Extractor",
 	"Selected: Shifter",
@@ -9405,25 +9400,25 @@ void idPlayer::craft() {
 
 	int itemCounts[NUM_MACHINES];
 	getItemCounts(itemCounts);
-	if (usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3) {
+	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3) {
 		removeItem("item_red", 3);
 		idDict dict;
 		dict.Set("classname", "extractor");
 		GiveInventoryItem(&dict);
 	}
-	else if (usercmd.forwardmove < 0 && itemCounts[ITEM_RED] >= 1) {
+	else if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove < 0 && itemCounts[ITEM_RED] >= 1) {
 		removeItem("item_red", 1);
 		idDict dict;
 		dict.Set("classname", "conveyor");
 		GiveInventoryItem(&dict);
 	}
-	else if (usercmd.rightmove > 0 && itemCounts[ITEM_RED] >= 3) {
+	else if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.rightmove > 0 && itemCounts[ITEM_RED] >= 3) {
 		removeItem("item_red", 3);
 		idDict dict;
 		dict.Set("classname", "shifter");
 		GiveInventoryItem(&dict);
 	}
-	else if (usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3) {
+	else if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3) {
 		removeItem("item_red", 3);
 		removeItem("item_green", 3);
 		idDict dict;
@@ -9432,29 +9427,19 @@ void idPlayer::craft() {
 	}
 }
 
-bool idPlayer::isCrafting() {
-	int itemCounts[NUM_MACHINES];
-	getItemCounts(itemCounts);
-	return
-		(usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3) ||
-		(usercmd.forwardmove < 0 && itemCounts[ITEM_RED] >= 1) ||
-		(usercmd.rightmove > 0 && itemCounts[ITEM_RED] >= 3) ||
-		(usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3);
-}
-
 char* idPlayer::craftingName() {
 	int itemCounts[NUM_MACHINES];
 	getItemCounts(itemCounts);
-	if (usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3) {
+	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3) {
 		return "Extractor";
 	}
-	if (usercmd.forwardmove < 0 && itemCounts[ITEM_RED] >= 1) {
+	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove < 0 && itemCounts[ITEM_RED] >= 1) {
 		return "Conveyor";
 	}
-	if (usercmd.rightmove > 0 && itemCounts[ITEM_RED] >= 3) {
-		return "Shifter";
+	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.rightmove > 0 && itemCounts[ITEM_RED] >= 3) {
+		return "Hue Shifter";
 	}
-	if (usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3) {
+	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.rightmove < 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3) {
 		return "Mixer";
 	}
 	return "";
@@ -9472,7 +9457,8 @@ void idPlayer::Think( void ) {
  
 	hud->SetStateBool("crafting_screen", physicsObj.IsCrouching());
 	
-	if (physicsObj.IsCrouching() && isCrafting()) {
+	char* crafting_name = craftingName();
+	if (physicsObj.IsCrouching() && *crafting_name) {
 		craftingProgress++;
 		craft();
 	}
@@ -9484,7 +9470,7 @@ void idPlayer::Think( void ) {
 	idStr p = "";
 	sprintf(p, "%d%%", (int)craftingProgress);
 	hud->SetStateString("crafting_percent", p);
-	hud->SetStateString("crafting_name", craftingName());
+	hud->SetStateString("crafting_name", crafting_name);
 
 	if ( talkingNPC ) {
 		if ( !talkingNPC.IsValid() ) {

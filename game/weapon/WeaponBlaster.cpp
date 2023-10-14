@@ -454,7 +454,8 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 				idDict pickupSpawnArgs;
 				idStr classname = player->getMachineClassname(player->machineIndex);
 				switch (player->machineIndex) {
-				case 4:
+				case ITEM_EXTRACTOR:
+				case ITEM_CONVEYOR:
 					yaw += 3.14159 / 2.0;
 					break;
 				}
@@ -504,17 +505,24 @@ stateResult_t rvWeaponBlaster::State_Flashlight ( const stateParms_t& parms ) {
 			// Wait for the flashlight anim to play		
 			PlayAnim( ANIMCHANNEL_ALL, "flashlight", 0);
 			if (owner) {
-				if (owner->IsCrouching()) {
-					owner->machineIndex--;
-				}
-				else {
-					owner->machineIndex++;
-				}
-				if (owner->machineIndex >= NUM_MACHINES) {
-					owner->machineIndex = 0;
-				}
-				if (owner->machineIndex < 0) {
-					owner->machineIndex = NUM_MACHINES - 1;
+				int itemCounts[NUM_MACHINES];
+				owner->getItemCounts(itemCounts);
+				for (int i = 0; i < NUM_MACHINES; i++) {
+					if (owner->IsCrouching()) {
+						owner->machineIndex--;
+					}
+					else {
+						owner->machineIndex++;
+					}
+					if (owner->machineIndex >= NUM_MACHINES) {
+						owner->machineIndex = 0;
+					}
+					if (owner->machineIndex < 0) {
+						owner->machineIndex = NUM_MACHINES - 1;
+					}
+					if (itemCounts[owner->machineIndex] != 0 || owner->machineIndex == ITEM_ZERO) {
+						break;
+					}
 				}
 				owner->updateSelected();
 			}

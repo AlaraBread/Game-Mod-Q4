@@ -194,7 +194,7 @@ const idVec4 stroggHitscanTint( 1.0f, 0.5f, 0.0f, 1.0f );
 const idVec4 defaultHitscanTint( 0.4f, 1.0f, 0.4f, 1.0f );
 
 const char* MACHINE_CLASSNAMES[NUM_MACHINES] = {
-	"",
+	"item_killme",
 	"item_red",
 	"item_green",
 	"item_blue",
@@ -5267,7 +5267,6 @@ bool idPlayer::GiveInventoryItem( idDict *item ) {
 	RV_POP_HEAP();
 // RAVEN END
 
-	gameLocal.Printf("in giveinvitem\n");
 	updateSelected();
 
 	if ( hud ) {

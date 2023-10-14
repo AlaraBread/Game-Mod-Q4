@@ -393,6 +393,8 @@ void idItem::Spawn( void ) {
 	idVec3		vSize;
 	idBounds	bounds(vec3_origin);
 
+	killme_timer = 0;
+
 	// check for triggerbounds, which allows for non-square triggers (useful for, say, a CTF flag)	 
 	if ( spawnArgs.GetVector( "triggerbounds", "16 16 16", vSize )) {
 		bounds.AddPoint(idVec3( vSize.x*0.5f,  vSize.y*0.5f, 0.0f));
@@ -1538,7 +1540,16 @@ idMoveableItem::Think
 void idMoveableItem::Think( void ) {
 	RunPhysics();
 	UpdateTrigger( );
-	Present();
+	
+	if (spawnArgs.GetBool("killme")) {
+		killme_timer++;
+		if (killme_timer > 1) {
+			PostEventMS(&EV_Remove, 0);
+		}
+	}
+	else {
+		Present();
+	}
 }
 
 /*

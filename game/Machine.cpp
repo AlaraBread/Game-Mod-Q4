@@ -71,17 +71,21 @@ void Machine::Think(void) {
 		}
 	}
 
-	if (crafter) {
-		// consume items
-		idVec3	newOrigin;
-		idMat3	newAxis;
-		idVec3 dir;
-		dir.Zero();
-		dir.z = 1.0;
+	// consume items
+	idVec3	newOrigin;
+	idMat3	newAxis;
+	idVec3 dir;
+	dir.Zero();
+	dir.z = 1.0;
 
-		newOrigin = GetPhysics()->GetOrigin() + dir;
-		newAxis = oldAxis;
-		idEntity* item = gameLocal.push.ClipItems(this, 0, GetPhysics()->GetOrigin(), dir);
+	newOrigin = GetPhysics()->GetOrigin() + dir;
+	newAxis = oldAxis;
+	idEntity* item = gameLocal.push.ClipItems(this, 0, GetPhysics()->GetOrigin(), dir);
+
+	GetPhysics()->SetOrigin(oldOrigin);
+	GetPhysics()->SetAxis(oldAxis);
+
+	if (crafter) {
 		if (item) {
 			idDict spawnArgs = item->spawnArgs;
 			bool consumed = true;
@@ -99,8 +103,6 @@ void Machine::Think(void) {
 				item->PostEventMS(&EV_Remove, 0);
 			}
 		}
-		GetPhysics()->SetOrigin(oldOrigin);
-		GetPhysics()->SetAxis(oldAxis);
 
 		// craft items
 		if (spawnArgs.GetBool("mixer")) {
@@ -161,6 +163,17 @@ void Machine::Think(void) {
 				idEntity* item = NULL;
 				gameLocal.SpawnEntityDef(args, &item, false);
 			}
+		}
+	}
+	if (item) {
+		idDict spawnArgs = item->spawnArgs;
+		if (spawnArgs.GetBool("killme")) {
+			idPlayer *player = gameLocal.GetLocalPlayer();
+			if (player) {
+				player->GiveInventoryItem(&spawnArgs);
+			}
+			item->PostEventMS(&EV_Remove, 0);
+			PostEventMS(&EV_Remove, 0);
 		}
 	}
 

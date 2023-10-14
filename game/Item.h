@@ -122,6 +122,8 @@ private: // FIXME: Temp hack while Eric gets back to me about why GameState.cpp 
 // abahr
 	void					Event_SetGravity();
 // RAVEN END
+public:
+	int killme_timer;
 };
 
 /*

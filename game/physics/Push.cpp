@@ -1269,7 +1269,6 @@ idEntity *idPush::ClipItems(idEntity* pusher, const int flags,
 	idBounds	bounds, pushBounds;
 	idVec3		clipMove, clipOrigin, oldOrigin, dir, impulse;
 	trace_t		pushResults;
-	bool		wasEnabled;
 	float		totalMass;
 	idClipModel* clipModel;
 
@@ -1292,8 +1291,6 @@ idEntity *idPush::ClipItems(idEntity* pusher, const int flags,
 		return NULL;
 	}
 	pushBounds.FromBoundsTranslation(bounds, clipModel->GetOrigin(), clipModel->GetAxis(), translation);
-
-	wasEnabled = clipModel->IsEnabled();
 
 	// make sure we don't get the pushing clip model in the list
 	clipModel->Disable();
@@ -1325,34 +1322,32 @@ idEntity *idPush::ClipItems(idEntity* pusher, const int flags,
 		clipOrigin = newOrigin;
 	}
 
-	// we have to enable the clip model because we use it during pushing
-	clipModel->Enable();
-
 	// save pusher old position
 	oldOrigin = clipModel->GetOrigin();
 
-	// try to push the entities
+	clipModel->Enable();
+
+	// return killme entities first
 	for (i = 0; i < listedEntities; i++) {
 
 		check = entityList[i];
 
-		idPhysics* physics = check->GetPhysics();
+		if (check->spawnArgs.GetBool("killme")) {
+			return check;
+		}
+	}
+
+	// then return any item
+	for (i = 0; i < listedEntities; i++) {
+
+		check = entityList[i];
 
 		if (check->IsType(idItem::GetClassType())) {
 			return check;
 		}
-
-		if (!wasEnabled) {
-			clipModel->Disable();
-		}
-
-		return NULL;
 	}
-
-	if (!wasEnabled) {
-		clipModel->Disable();
-	}
-
+	
+	// we didnt find anything
 	return NULL;
 }
 

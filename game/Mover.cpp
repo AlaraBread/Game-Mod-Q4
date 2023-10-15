@@ -5849,7 +5849,7 @@ void rvConveyor::Think ( void ) {
 		if (itemSpawnArgs.GetBool("killme")) {
 			idPlayer* player = gameLocal.GetLocalPlayer();
 			if (player) {
-				player->GiveInventoryItem(&spawnArgs);
+				player->addFactoryItem(spawnArgs.GetInt("inv_factory_index", "0"), 1);
 			}
 			item->PostEventMS(&EV_Remove, 0);
 			PostEventMS(&EV_Remove, 0);

@@ -38,7 +38,7 @@ void Machine::Spawn(void) {
 	blue = 0;
 	yellow = 0;
 	magenta = 0;
-	blue = 0;
+	cyan = 0;
 
 	crafter = spawnArgs.GetBool("crafter");
 	extractor = spawnArgs.GetBool("extractor");
@@ -211,7 +211,7 @@ void Machine::Think(void) {
 				gameLocal.SpawnEntityDef(args, &item, false);
 			}
 			else if (magenta >= 10) {
-				blue = 0;
+				magenta = 0;
 
 				idDict args;
 				args.Set("classname", "item_spacepart_magenta");
@@ -235,7 +235,7 @@ void Machine::Think(void) {
 		if (itemSpawnArgs.GetBool("killme")) {
 			idPlayer *player = gameLocal.GetLocalPlayer();
 			if (player) {
-				player->GiveInventoryItem(&spawnArgs);
+				player->addFactoryItem(spawnArgs.GetInt("inv_factory_index", "0"), 1);
 			}
 			item->PostEventMS(&EV_Remove, 0);
 			PostEventMS(&EV_Remove, 0);

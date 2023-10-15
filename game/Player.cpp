@@ -240,23 +240,20 @@ const char* idPlayer::getMachineClassname(int i) {
 	return MACHINE_CLASSNAMES[i];
 }
 
-void idPlayer::removeItem(idStr classname, int count) {
-	for (int i = 0; i < inventory.items.Num() && count > 0; i++) {
-		idDict* item = inventory.items[i];
-		if (!item) {
-			continue;
-		}
-		idStr item_classname = item->GetString("classname");
-		if (classname == item_classname) {
-			inventory.items.RemoveIndex(i);
-			i--;
-			count--;
-		}
-	}
+void idPlayer::addFactoryItem(int index, int count) {
+	factoryItems[index] += count;
+	updateSelected();
+}
+
+void idPlayer::removeItem(int index, int count) {
+	factoryItems[index] -= count;
 	updateSelected();
 }
 
 void idPlayer::updateSelected() {
+	if (health <= 0) {
+		return;
+	}
 	idStr t = MACHINE_SELECTED[machineIndex];
 	int itemCounts[NUM_MACHINES];
 	getItemCounts(itemCounts);
@@ -269,21 +266,8 @@ void idPlayer::updateSelected() {
 
 
 void idPlayer::getItemCounts(int* itemCounts) {
-	idList<idDict*> inv = inventory.items;
 	for (int i = 0; i < NUM_MACHINES; i++) {
-		itemCounts[i] = 0;
-	}
-	for (int i = 0; i < inv.Num(); i++) {
-		idDict* item = inv[i];
-		if (!item) {
-			continue;
-		}
-		for (int j = 1; j < NUM_MACHINES; j++) {
-			idStr c = item->GetString("classname");
-			if (c.Cmp(MACHINE_CLASSNAMES[j]) == 0) {
-				itemCounts[j] += 1;
-			}
-		}
+		itemCounts[i] = factoryItems[i];
 	}
 }
 
@@ -1907,6 +1891,10 @@ void idPlayer::Spawn( void ) {
 	machineIndex = 0;
 	craftingProgress = 0;
 
+	for (int i = 0; i < NUM_MACHINES; i++) {
+		factoryItems[i] = 0;
+	}
+
 	if ( entityNumber >= MAX_CLIENTS ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
 	}
@@ -2153,15 +2141,8 @@ void idPlayer::Spawn( void ) {
 //RITUAL END
 
 	itemCosts = static_cast< const idDeclEntityDef * >( declManager->FindType( DECL_ENTITYDEF, "ItemCostConstants", false ) );
-
-	updateSelected();
 	
-	idDict red;
-	red.Set("classname", "item_red");
-	red.Set("factory_item", "red");
-	for (int i = 0; i < 10; i++) {
-		GiveInventoryItem(&red);
-	}
+	addFactoryItem(ITEM_RED, 10);
 }
 
 /*
@@ -3499,18 +3480,8 @@ void idPlayer::UpdateHudStats(idUserInterface* _hud) {
 
 	assert(_hud);
 
-	idStr item_texts[6] = {"red", "green", "blue", "cyan", "magenta", "yellow"};
-	for (int j = 0; j < 6; j++) {
-		int item_count = 0;
-		idStr item_text = item_texts[j];
-
-		for (int i = 0; i < inventory.items.Num(); i++) {
-			if (item_text == inventory.items[i]->GetString("factory_item")) {
-				item_count++;
-			}
-		}
-
-		_hud->SetStateInt(item_text.c_str(), item_count);
+	for (int i = 1; i < 7; i++) {
+		_hud->SetStateInt(MACHINE_CLASSNAMES[i], factoryItems[i]);
 	}
 
 	updateSelected();
@@ -9412,48 +9383,36 @@ void idPlayer::craft() {
 	int itemCounts[NUM_MACHINES];
 	getItemCounts(itemCounts);
 	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove > 0 && usercmd.rightmove == 0 && itemCounts[ITEM_RED] >= 3) {
-		removeItem("item_red", 3);
-		idDict dict;
-		dict.Set("classname", "extractor");
-		GiveInventoryItem(&dict);
+		removeItem(ITEM_RED, 3);
+		addFactoryItem(ITEM_EXTRACTOR, 1);
 	}
 	else if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove < 0 && usercmd.rightmove == 0 && itemCounts[ITEM_RED] >= 1) {
-		removeItem("item_red", 1);
-		idDict dict;
-		dict.Set("classname", "conveyor");
-		GiveInventoryItem(&dict);
+		removeItem(ITEM_RED, 1);
+		addFactoryItem(ITEM_CONVEYOR, 1);
 	}
 	else if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.rightmove > 0 && usercmd.forwardmove == 0 && itemCounts[ITEM_RED] >= 3) {
-		removeItem("item_red", 3);
-		idDict dict;
-		dict.Set("classname", "shifter");
-		GiveInventoryItem(&dict);
+		removeItem(ITEM_RED, 3);
+		addFactoryItem(ITEM_SHIFTER, 1);
 	}
 	else if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.rightmove < 0 && usercmd.forwardmove == 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3) {
-		removeItem("item_red", 3);
-		idDict dict;
-		dict.Set("classname", "mixer");
-		GiveInventoryItem(&dict);
+		removeItem(ITEM_RED, 3);
+		addFactoryItem(ITEM_MIXER, 1);
 	}
 	else if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.rightmove < 0 && usercmd.forwardmove > 0 && itemCounts[ITEM_RED] >= 3 && itemCounts[ITEM_GREEN] >= 3 && itemCounts[ITEM_BLUE] >= 3) {
-		removeItem("item_red", 3);
-		removeItem("item_green", 3);
-		removeItem("item_blue", 3);
-		idDict dict;
-		dict.Set("classname", "factory");
-		GiveInventoryItem(&dict);
+		removeItem(ITEM_RED, 3);
+		removeItem(ITEM_GREEN, 3);
+		removeItem(ITEM_BLUE, 3);
+		addFactoryItem(ITEM_FACTORY, 1);
 	} else 	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.rightmove > 0 && usercmd.forwardmove > 0 &&
 			itemCounts[ITEM_SPACEPART_RED] >= 1 && itemCounts[ITEM_SPACEPART_GREEN] >= 1 && itemCounts[ITEM_SPACEPART_BLUE] >= 1 &&
 			itemCounts[ITEM_SPACEPART_YELLOW] >= 1 && itemCounts[ITEM_SPACEPART_MAGENTA] >= 1 && itemCounts[ITEM_SPACEPART_CYAN] >= 1) {
-		removeItem("item_spacepart_red", 1);
-		removeItem("item_spacepart_green", 1);
-		removeItem("item_spacepart_blue", 1);
-		removeItem("item_spacepart_yellow", 1);
-		removeItem("item_spacepart_magenta", 1);
-		removeItem("item_spacepart_cyan", 1);
-		idDict dict;
-		dict.Set("classname", "item_spaceship");
-		GiveInventoryItem(&dict);
+		removeItem(ITEM_SPACEPART_RED, 1);
+		removeItem(ITEM_SPACEPART_GREEN, 1);
+		removeItem(ITEM_SPACEPART_BLUE, 1);
+		removeItem(ITEM_SPACEPART_YELLOW, 1);
+		removeItem(ITEM_SPACEPART_MAGENTA, 1);
+		removeItem(ITEM_SPACEPART_CYAN, 1);
+		addFactoryItem(ITEM_SPACESHIP, 1);
 	}
 }
 

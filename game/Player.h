@@ -57,6 +57,30 @@ const int	ASYNC_PLAYER_INV_WPMOD_BITS = 3;							// 3 bits (max of 3 mods per gu
 // NOTE: protocol 69 used 6 bits, but that's only used for client -> server traffic, so doesn't affect backwards protocol replay compat
 const int	IMPULSE_NUMBER_OF_BITS		= 8;							// allows for 2<<X impulses
 
+const int NUM_MACHINES = 19;
+
+enum {
+	ITEM_ZERO,
+	ITEM_RED,
+	ITEM_GREEN,
+	ITEM_BLUE,
+	ITEM_YELLOW,
+	ITEM_MAGENTA,
+	ITEM_CYAN,
+	ITEM_SPACEPART_RED,
+	ITEM_SPACEPART_GREEN,
+	ITEM_SPACEPART_BLUE,
+	ITEM_SPACEPART_YELLOW,
+	ITEM_SPACEPART_MAGENTA,
+	ITEM_SPACEPART_CYAN,
+	ITEM_SPACESHIP,
+	ITEM_CONVEYOR,
+	ITEM_EXTRACTOR,
+	ITEM_SHIFTER,
+	ITEM_MIXER,
+	ITEM_FACTORY,
+};
+
 #define MAX_CONCURRENT_VOICES	3
 
 // RAVEN BEGIN
@@ -1158,8 +1182,10 @@ public:
 	idStr selectedItem;
 	int machineIndex;
 	int craftingProgress;
+	int factoryItems[NUM_MACHINES];
 
-	void removeItem(idStr classname, int count);
+	void removeItem(int index, int count);
+	void addFactoryItem(int index, int count);
 	void updateSelected();
 	void getItemCounts(int* itemCounts);
 	const char* getMachineClassname(int i);
@@ -1167,30 +1193,6 @@ public:
 	char* idPlayer::craftingName();
 
  	CLASS_STATES_PROTOTYPE( idPlayer );
-};
-
-const int NUM_MACHINES = 19;
-
-enum {
-	ITEM_ZERO,
-	ITEM_RED,
-	ITEM_GREEN,
-	ITEM_BLUE,
-	ITEM_YELLOW,
-	ITEM_MAGENTA,
-	ITEM_CYAN,
-	ITEM_SPACEPART_RED,
-	ITEM_SPACEPART_GREEN,
-	ITEM_SPACEPART_BLUE,
-	ITEM_SPACEPART_YELLOW,
-	ITEM_SPACEPART_MAGENTA,
-	ITEM_SPACEPART_CYAN,
-	ITEM_SPACESHIP,
-	ITEM_CONVEYOR,
-	ITEM_EXTRACTOR,
-	ITEM_SHIFTER,
-	ITEM_MIXER,
-	ITEM_FACTORY,
 };
 
 ID_INLINE bool idPlayer::IsBeingTalkedTo( void ) {

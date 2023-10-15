@@ -246,12 +246,12 @@ windowDef Desktop
 		}
 		windowDef selected_item
 		{
-			rect	155,336,362,30
+			rect	2,336,562,40
 			visible	1
 			forecolor	0.862,0.917,0.760,1
 			text	"gui::selected_item"
 			textscale	0.5
-			font	"fonts/chain"
+			font	"fonts/lowpixel"
 			shear	0,-.22
 			textalign	2
 			notime	1
@@ -1888,9 +1888,9 @@ windowDef Desktop
 		windowDef red_amount
 		{
 			rect	1,26,100,30
-			visible	("gui::red" > 0 )
+			visible	("gui::item_red" > 0 )
 			forecolor	0.862,0.917,0.760,1
-			text	"gui::red"
+			text	"gui::item_red"
 			textscale	0.5
 			font	"fonts/chain"
 			shear	0,-.22
@@ -1900,7 +1900,7 @@ windowDef Desktop
 		windowDef red_text
 		{
 			rect	1,0,100,30
-			visible	("gui::red" > 0 )
+			visible	("gui::item_red" > 0 )
 			forecolor	0.862,0.917,0.760,1
 			text	Redium
 			textscale	0.5
@@ -1912,7 +1912,7 @@ windowDef Desktop
 		windowDef green_text
 		{
 			rect	1,50,110,30
-			visible	("gui::green" > 0 )
+			visible	("gui::item_green" > 0 )
 			forecolor	0.862,0.917,0.760,1
 			text	Greenite
 			textscale	0.5
@@ -1924,9 +1924,9 @@ windowDef Desktop
 		windowDef green_amount
 		{
 			rect	1,75,100,30
-			visible	("gui::green" > 0 )
+			visible	("gui::item_green" > 0 )
 			forecolor	0.862,0.917,0.760,1
-			text	"gui::green"
+			text	"gui::item_green"
 			textscale	0.5
 			font	"fonts/chain"
 			shear	0,-.22
@@ -1936,7 +1936,7 @@ windowDef Desktop
 		windowDef blue_text
 		{
 			rect	1,100,100,30
-			visible	("gui::blue" > 0 )
+			visible	("gui::item_blue" > 0 )
 			forecolor	0.862,0.917,0.760,1
 			text	Bluide
 			textscale	0.5
@@ -1948,9 +1948,9 @@ windowDef Desktop
 		windowDef blue_amount
 		{
 			rect	1,125,100,30
-			visible	("gui::blue" > 0 )
+			visible	("gui::item_blue" > 0 )
 			forecolor	0.862,0.917,0.760,1
-			text	"gui::blue"
+			text	"gui::item_blue"
 			textscale	0.5
 			font	"fonts/chain"
 			shear	0,-.22
@@ -1960,9 +1960,9 @@ windowDef Desktop
 		windowDef yellow_amount
 		{
 			rect	1,175,100,30
-			visible	("gui::yellow" > 0 )
+			visible	("gui::item_yellow" > 0 )
 			forecolor	0.862,0.917,0.760,1
-			text	"gui::yellow"
+			text	"gui::item_yellow"
 			textscale	0.5
 			font	"fonts/chain"
 			shear	0,-.22
@@ -1972,9 +1972,9 @@ windowDef Desktop
 		windowDef cyan_amount
 		{
 			rect	1,275,100,30
-			visible	("gui::cyan" > 0 )
+			visible	("gui::item_cyan" > 0 )
 			forecolor	0.862,0.917,0.760,1
-			text	"gui::cyan"
+			text	"gui::item_cyan"
 			textscale	0.5
 			font	"fonts/chain"
 			shear	0,-.22
@@ -1984,7 +1984,7 @@ windowDef Desktop
 		windowDef cyan_text
 		{
 			rect	1,250,100,30
-			visible	("gui::cyan" > 0 )
+			visible	("gui::item_cyan" > 0 )
 			forecolor	0.862,0.917,0.760,1
 			text	Cyanide
 			textscale	0.5
@@ -1996,7 +1996,7 @@ windowDef Desktop
 		windowDef magenta_text
 		{
 			rect	1,200,150,30
-			visible	("gui::magenta" > 0 )
+			visible	("gui::item_magenta" > 0 )
 			forecolor	0.862,0.917,0.760,1
 			text	Magentite
 			textscale	0.5
@@ -2008,9 +2008,9 @@ windowDef Desktop
 		windowDef magenta_amount
 		{
 			rect	1,225,100,30
-			visible	("gui::magenta" > 0 )
+			visible	("gui::item_magenta" > 0 )
 			forecolor	0.862,0.917,0.760,1
-			text	"gui::magenta"
+			text	"gui::item_magenta"
 			textscale	0.5
 			font	"fonts/chain"
 			shear	0,-.22
@@ -2020,7 +2020,7 @@ windowDef Desktop
 		windowDef yellow_text
 		{
 			rect	1,150,100,30
-			visible	("gui::yellow" > 0 )
+			visible	("gui::item_yellow" > 0 )
 			forecolor	0.862,0.917,0.760,1
 			text	Yellorite
 			textscale	0.5

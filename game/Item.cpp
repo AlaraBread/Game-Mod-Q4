@@ -598,6 +598,11 @@ bool idItem::GiveToPlayer( idPlayer *player ) {
 		return false;
 	}
 
+	if (spawnArgs.GetBool("inv_factory")) {
+		player->addFactoryItem(spawnArgs.GetInt("inv_factory_index", "0"), 1);
+		return true;
+	}
+
 	if ( spawnArgs.GetBool( "inv_carry" ) ) {
 		return player->GiveInventoryItem( &spawnArgs );
 	} 
@@ -643,6 +648,8 @@ idItem::Pickup
 bool idItem::Pickup( idPlayer *player ) {
 	if (player && killme_timer > 10 && spawnArgs.GetBool("spaceship")) {
 		player->Kill(false, false);
+		player->selectedItem = "It smells like almonds...";
+		player->updateSelected();
 	}
 	//dropped weapon?
 	bool dropped = spawnArgs.GetBool( "dropped" );

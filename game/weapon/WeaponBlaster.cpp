@@ -439,7 +439,6 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 					SetState("Idle", 4);
 					return SRESULT_DONE;
 				}
-				gameLocal.Printf("in shoot %d\n", owner->machineIndex);
 
 				int itemCounts[NUM_MACHINES];
 				player->getItemCounts(itemCounts);
@@ -469,8 +468,7 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 				pickupSpawnArgs.Set("origin", org.ToString());
 				idEntity* pickup = NULL;
 				gameLocal.SpawnEntityDef(pickupSpawnArgs, &pickup, false);
-
-					player->removeItem(classname, 1);
+				player->removeItem(player->machineIndex, 1);
 				PlayEffect ( "fx_normalflash", barrelJointView, false );
 				PlayAnim( ANIMCHANNEL_ALL, "fire", parms.blendFrames );
 			}
@@ -526,7 +524,6 @@ stateResult_t rvWeaponBlaster::State_Flashlight ( const stateParms_t& parms ) {
 						break;
 					}
 				}
-				gameLocal.Printf("%d\n", owner->machineIndex);
 				owner->updateSelected();
 			}
 			return SRESULT_STAGE ( FLASHLIGHT_WAIT );

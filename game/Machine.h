@@ -17,6 +17,10 @@ public:
 	int red;
 	int green;
 	int blue;
+	int yellow;
+	int magenta;
+	int cyan;
+
 private:
 
 	idVec3					moveDir;

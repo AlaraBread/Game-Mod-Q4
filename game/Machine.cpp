@@ -36,6 +36,9 @@ void Machine::Spawn(void) {
 	red = 0;
 	green = 0;
 	blue = 0;
+	yellow = 0;
+	magenta = 0;
+	blue = 0;
 
 	crafter = spawnArgs.GetBool("crafter");
 	extractor = spawnArgs.GetBool("extractor");
@@ -96,6 +99,12 @@ void Machine::Think(void) {
 				green++;
 			} else if (item_type == "blue") {
 				blue++;
+			} else if (item_type == "yellow") {
+				yellow++;
+			} else if (item_type == "magenta") {
+				magenta++;
+			} else if (item_type == "cyan") {
+				cyan++;
 			} else {
 				consumed = false;
 			}
@@ -159,6 +168,62 @@ void Machine::Think(void) {
 
 				idDict args;
 				args.Set("classname", "item_red");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+		}
+		if (spawnArgs.GetBool("factory")) {
+			if (red >= 10) {
+				red = 0;
+
+				idDict args;
+				args.Set("classname", "item_spacepart_red");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+			else if (green >= 10) {
+				green = 0;
+
+				idDict args;
+				args.Set("classname", "item_spacepart_green");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+			else if (blue >= 10) {
+				blue = 0;
+
+				idDict args;
+				args.Set("classname", "item_spacepart_blue");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+			else if (yellow >= 10) {
+				yellow = 0;
+
+				idDict args;
+				args.Set("classname", "item_spacepart_yellow");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+			else if (magenta >= 10) {
+				blue = 0;
+
+				idDict args;
+				args.Set("classname", "item_spacepart_magenta");
+				args.Set("origin", spawnPos.ToString());
+				idEntity* item = NULL;
+				gameLocal.SpawnEntityDef(args, &item, false);
+			}
+			else if (cyan >= 10) {
+				cyan = 0;
+
+				idDict args;
+				args.Set("classname", "item_spacepart_cyan");
 				args.Set("origin", spawnPos.ToString());
 				idEntity* item = NULL;
 				gameLocal.SpawnEntityDef(args, &item, false);

@@ -608,6 +608,195 @@ entityDef item_cyan
 	"skin"					"skins/items/ammo/nailgun"
 }
 
+
+entityDef item_spacepart_red
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"spacepart_red"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Redium"
+	"inv_icon"					"icons/red.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/rocketlauncher"
+
+	"bigger"				"1"
+}
+
+entityDef item_spacepart_green
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"spacepart_green"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Greenite"
+	"inv_icon"					"icons/green.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/railgun"
+
+	"bigger"				"1"
+}
+
+entityDef item_spacepart_blue
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"spacepart_blue"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Bluide"
+	"inv_icon"					"icons/blue.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/hyperblaster"
+
+	"bigger"				"1"
+}
+
+
+entityDef item_spacepart_yellow
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"spacepart_yellow"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Yellorite"
+	"inv_icon"					"icons/yellow.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/lightninggun"
+
+	"bigger"				"1"
+}
+
+entityDef item_spacepart_magenta
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"spacepart_magenta"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Magentite"
+	"inv_icon"					"icons/magenta.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/dmg"
+
+	"bigger"				"1"
+}
+
+entityDef item_spacepart_cyan
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"factory_item"				"spacepart_cyan"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Cyanide"
+	"inv_icon"					"icons/cyan.tga"
+
+	"model"					"models/items/ammo/ammo_box.lwo"
+	"skin"					"skins/items/ammo/nailgun"
+
+	"bigger"				"1"
+}
+
+entityDef item_spaceship
+{
+	"inherit"				"item_default"
+
+	"spawnclass"				"idMoveableItem"
+	"itemclipmodel"				"models/pick_ups/sp_pickups/sp_small_health_col.lwo"
+	"nodrop"					"0"
+	"noimpact"					"1"
+	"notPushable"				"1"
+	"density"					"1"
+	"mass"						"3000"
+	"friction"					"0.4"
+	"bouncyness"				"0.3"
+
+	"inv_carry"					"1"
+	"inv_item"					"1"
+	"inv_name"					"Spaceship"
+	"inv_icon"					"icons/cyan.tga"
+
+	"model"					"models/mapobjects/strogg/crates/crate1_tall.lwo"
+
+	"bigger"				"1"
+	"spaceship"				"1"
+}
+
 entityDef item_killme
 {
 	"inherit"				"item_default"
@@ -664,6 +853,15 @@ entityDef shifter {
 	"spawnclass"	"Machine"
 	"crafter"		"1"
 	"shifter"			"1"
+	"output_offset"		"100 0 30"
+	"model"			"models/mapobjects/strogg/structural/pillars/pillar_01.lwo"
+}
+
+entityDef factory {
+	"inherit"				"item_default"
+	"spawnclass"	"Machine"
+	"crafter"		"1"
+	"factory"			"1"
 	"output_offset"		"100 0 30"
 	"model"			"models/mapobjects/strogg/structural/pillars/pillar_01.lwo"
 }

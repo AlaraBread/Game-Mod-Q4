@@ -439,6 +439,8 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 					SetState("Idle", 4);
 					return SRESULT_DONE;
 				}
+				gameLocal.Printf("in shoot %d\n", owner->machineIndex);
+
 				int itemCounts[NUM_MACHINES];
 				player->getItemCounts(itemCounts);
 
@@ -524,6 +526,7 @@ stateResult_t rvWeaponBlaster::State_Flashlight ( const stateParms_t& parms ) {
 						break;
 					}
 				}
+				gameLocal.Printf("%d\n", owner->machineIndex);
 				owner->updateSelected();
 			}
 			return SRESULT_STAGE ( FLASHLIGHT_WAIT );

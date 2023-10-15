@@ -254,6 +254,13 @@ idItem::GetPhysicsToVisualTransform
 ================
 */
 bool idItem::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) {
+	axis = mat3_identity;
+	if (spawnArgs.GetBool("bigger")) {
+		axis *= 2.0;
+	}
+	origin = idVec3(0, 0, 0);
+	return true;
+
 	if( simpleItem ) {
 		if ( gameLocal.GetLocalPlayer() && gameLocal.GetLocalPlayer()->GetRenderView() ) {
 			if( gameLocal.GetLocalPlayer()->spectating ) {
@@ -313,6 +320,7 @@ idItem::Think
 ================
 */
 void idItem::Think( void ) {
+	killme_timer++;
 	if ( thinkFlags & TH_PHYSICS ) {
 		RunPhysics();		
 		UpdateTrigger();
@@ -591,7 +599,6 @@ bool idItem::GiveToPlayer( idPlayer *player ) {
 	}
 
 	if ( spawnArgs.GetBool( "inv_carry" ) ) {
-		gameLocal.Printf("inv carry\n");
 		return player->GiveInventoryItem( &spawnArgs );
 	} 
 	
@@ -634,6 +641,9 @@ idItem::Pickup
 ================
 */
 bool idItem::Pickup( idPlayer *player ) {
+	if (player && killme_timer > 10 && spawnArgs.GetBool("spaceship")) {
+		player->Kill(false, false);
+	}
 	//dropped weapon?
 	bool dropped = spawnArgs.GetBool( "dropped" );
 
@@ -1541,8 +1551,8 @@ void idMoveableItem::Think( void ) {
 	RunPhysics();
 	UpdateTrigger( );
 	
+	killme_timer++;
 	if (spawnArgs.GetBool("killme")) {
-		killme_timer++;
 		if (killme_timer > 1) {
 			PostEventMS(&EV_Remove, 0);
 		}

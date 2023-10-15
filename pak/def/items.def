@@ -818,6 +818,18 @@ entityDef extractor {
 	"inv_factory_index"		"15"
 }
 
+entityDef extractor_green {
+	"inherit"				"item_default"
+	"spawnclass"	"Machine"
+	"extractor"		"1"
+	"extract_classname"	"item_green"
+	"output_offset"		"0 -50 30"
+	"model"			"models/mapobjects/strogg/console/arcade_machine/a_machine.lwo"
+
+	"inv_factory"			"1"
+	"inv_factory_index"		"16"
+}
+
 
 entityDef mixer {
 	"inherit"				"item_default"
@@ -828,7 +840,7 @@ entityDef mixer {
 	"model"			"models/mapobjects/strogg/console/generic/data_bank1.lwo"
 
 	"inv_factory"			"1"
-	"inv_factory_index"		"17"
+	"inv_factory_index"		"18"
 }
 
 entityDef shifter {
@@ -840,7 +852,7 @@ entityDef shifter {
 	"model"			"models/mapobjects/strogg/structural/pillars/pillar_01.lwo"
 
 	"inv_factory"			"1"
-	"inv_factory_index"		"16"
+	"inv_factory_index"		"17"
 }
 
 entityDef factory {
@@ -852,5 +864,5 @@ entityDef factory {
 	"model"			"models/mapobjects/strogg/console/arcade_machine/a_machine_02.lwo"
 
 	"inv_factory"			"1"
-	"inv_factory_index"		"18"
+	"inv_factory_index"		"19"
 }

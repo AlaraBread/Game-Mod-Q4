@@ -459,6 +459,7 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 				case ITEM_CONVEYOR:
 					pickupSpawnArgs.SetFloat("moveAngle", yaw+180.0);
 				case ITEM_EXTRACTOR:
+				case ITEM_EXTRACTOR_GREEN:
 					yaw += 90.0;
 					break;
 				}

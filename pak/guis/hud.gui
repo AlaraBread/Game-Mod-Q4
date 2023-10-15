@@ -2043,12 +2043,12 @@ windowDef Desktop
 		}
 		windowDef crafting_name
 		{
-			rect	400,25,200,30
+			rect	200,25,400,40
 			visible	("gui::crafting_progress" > 0 )
 			forecolor	0.862,0.917,0.760,1
 			text	"gui::crafting_name"
 			textscale	0.5
-			font	"fonts/chain"
+			font	"fonts/lowpixel"
 			shear	0,-.22
 			textalign	2
 			notime	1

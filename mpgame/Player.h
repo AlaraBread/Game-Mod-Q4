@@ -57,7 +57,7 @@ const int	ASYNC_PLAYER_INV_CLIP_BITS = -7;							// -7 bits to cover the range [
 // NOTE: protocol 69 used 6 bits, but that's only used for client -> server traffic, so doesn't affect backwards protocol replay compat
 const int	IMPULSE_NUMBER_OF_BITS		= 8;							// allows for 2<<X impulses
 
-const int NUM_MACHINES = 19;
+const int NUM_MACHINES = 20;
 
 enum {
 	ITEM_ZERO,
@@ -76,6 +76,7 @@ enum {
 	ITEM_SPACESHIP,
 	ITEM_CONVEYOR,
 	ITEM_EXTRACTOR,
+	ITEM_EXTRACTOR_GREEN,
 	ITEM_SHIFTER,
 	ITEM_MIXER,
 	ITEM_FACTORY,

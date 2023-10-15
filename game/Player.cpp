@@ -210,6 +210,7 @@ const char* MACHINE_CLASSNAMES[NUM_MACHINES] = {
 	"item_spaceship",
 	"conveyor",
 	"extractor",
+	"extractor_green",
 	"shifter",
 	"mixer",
 	"factory",
@@ -230,7 +231,8 @@ const char* MACHINE_SELECTED[NUM_MACHINES] = {
 	"Selected: Cyanide Spacepart",
 	"Selected: Spaceship",
 	"Selected: Conveyor",
-	"Selected: Extractor",
+	"Selected: Redium Extractor",
+	"Selected: Greenite Extractor",
 	"Selected: Hue Shifter",
 	"Selected: Mixer",
 	"Selected: Factory",
@@ -9386,6 +9388,10 @@ void idPlayer::craft() {
 		removeItem(ITEM_RED, 3);
 		addFactoryItem(ITEM_EXTRACTOR, 1);
 	}
+	else if ((usercmd.buttons & BUTTON_RUN) == 0 && usercmd.forwardmove > 0 && usercmd.rightmove == 0 && itemCounts[ITEM_GREEN] >= 10) {
+		removeItem(ITEM_GREEN, 10);
+		addFactoryItem(ITEM_EXTRACTOR_GREEN, 1);
+	}
 	else if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove < 0 && usercmd.rightmove == 0 && itemCounts[ITEM_RED] >= 1) {
 		removeItem(ITEM_RED, 1);
 		addFactoryItem(ITEM_CONVEYOR, 1);
@@ -9420,7 +9426,10 @@ char* idPlayer::craftingName() {
 	int itemCounts[NUM_MACHINES];
 	getItemCounts(itemCounts);
 	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove > 0 && usercmd.rightmove == 0 && itemCounts[ITEM_RED] >= 3) {
-		return "Extractor";
+		return "Redium Extractor";
+	}
+	if ((usercmd.buttons & BUTTON_RUN) == 0 && usercmd.forwardmove > 0 && usercmd.rightmove == 0 && itemCounts[ITEM_GREEN] >= 10) {
+		return "Greenite Extractor";
 	}
 	if ((usercmd.buttons & BUTTON_RUN) != 0 && usercmd.forwardmove < 0 && usercmd.rightmove == 0 && itemCounts[ITEM_RED] >= 1) {
 		return "Conveyor";

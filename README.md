@@ -6,7 +6,7 @@ Compile the game in release mode using visual studio 2022.
 
 ## how to install
 
-Make a new folder in your quake 4 installation directory. This is the mod folder.
+Make a new folder in your quake 4 installation directory. This is the mod folder. For the included shortcut to work, it should be called `testmod`, but if you call it something else, just update the shortcut.
 
 Make a zip file inside the mod folder called `game000.pk4` and put `gamex86.dll` and `binary.conf` inside of it.
 \(you may have to rename the file to end in .zip so you can open it. make sure to rename it back to .pk4 before running the game though.\)
@@ -17,6 +17,8 @@ Make a zip file inside the mod folder called `game000.pk4` and put `gamex86.dll`
 Make another zip file inside the mod folder called `pak001.pk4`.
 
 Put the contents of the `pak` folder inside this zip file.
+
+If your quake installation isn't in `"C:\Program Files (x86)\Steam\steamapps\common\Quake 4`, then you will have to edit the shortcut.
 
 ## how to play
 
